@@ -15,7 +15,16 @@ function ProductTable({ onAdd, onEdit }) {
   };
 
   useEffect(() => {
-    fetchProducts();
+    const loadProducts = async () => {
+      try {
+        const data = await getProducts();
+        setProducts(data);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    loadProducts();
   }, []);
 
   const handleDelete = async (id) => {

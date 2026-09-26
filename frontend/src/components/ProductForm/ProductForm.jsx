@@ -1,32 +1,30 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 import { createProduct, updateProduct } from '../../services/productService.js';
 import s from './ProductForm.module.css';
 
 function ProductForm({ selectedProduct, onSuccess, onCancel }) {
-  const [name, setName] = useState('');
-  const [price, setPrice] = useState('');
+  // Remount the fields when the product changes so initial state stays in sync
+  // without calling setState from an effect.
+  return (
+    <ProductFormFields
+      key={selectedProduct?.id ?? 'new'}
+      selectedProduct={selectedProduct}
+      onSuccess={onSuccess}
+      onCancel={onCancel}
+    />
+  );
+}
+
+function ProductFormFields({ selectedProduct, onSuccess, onCancel }) {
+  const [name, setName] = useState(selectedProduct?.name ?? '');
+  const [price, setPrice] = useState(selectedProduct?.price ?? '');
   const [image, setImage] = useState(null);
-  const [imagePreview, setImagePreview] = useState(null);
-
-  useEffect(() => {
-    if (selectedProduct) {
-      setName(selectedProduct.name);
-      setPrice(selectedProduct.price);
-      setImage(null);
-
-      if (selectedProduct.image) {
-        setImagePreview(`http://localhost:3000/uploads/${selectedProduct.image}`);
-      } else {
-        setImagePreview(null);
-      }
-    } else {
-      setName('');
-      setPrice('');
-      setImage(null);
-      setImagePreview(null);
-    }
-  }, [selectedProduct]);
+  const [imagePreview, setImagePreview] = useState(
+    selectedProduct?.image
+      ? `http://localhost:3000/uploads/${selectedProduct.image}`
+      : null,
+  );
 
   const handleImageChange = (e) => {
     const selectedImage = e.target.files[0];

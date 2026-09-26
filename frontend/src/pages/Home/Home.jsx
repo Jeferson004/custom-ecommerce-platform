@@ -5,17 +5,25 @@ import { getProducts } from '../../services/productService.js';
 const Home = () => {
   const [products, setProducts] = useState([]);
 
-  const fetchProducts = async () => {
-    try {
-      const data = await getProducts();
-      setProducts(data);
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
   useEffect(() => {
-    fetchProducts();
+    let isMounted = true;
+
+    const timeoutId = setTimeout(() => {
+      getProducts()
+        .then((data) => {
+          if (isMounted) {
+            setProducts(data);
+          }
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+    }, 0);
+
+    return () => {
+      isMounted = false;
+      clearTimeout(timeoutId);
+    };
   }, []);
 
   return (
