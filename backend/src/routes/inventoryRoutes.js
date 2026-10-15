@@ -1,5 +1,4 @@
 import express from "express";
-
 import {
     getInventory,
     getInventoryByProductId,
@@ -8,10 +7,8 @@ import {
 } from "../controllers/inventoryController.js";
 
 const router = express.Router();
-
 router.get("/", getInventory);
 router.get("/:productId", getInventoryByProductId);
-
 router.post("/", createInventory);
 router.put("/:productId", updateInventory);
 
