@@ -1,95 +1,74 @@
-import pool from "../configs/db.js";
-
+import {
+    findAllCategories,
+    findCategoryById,
+    createCategory as createCategoryModel,
+    updateCategory as updateCategoryModel,
+    deleteCategory as deleteCategoryModel,
+} from "../models/categoryModel.js";
 
 // GET /api/categories
 export const getCategories = async (req, res) => {
     try {
-        const result = await pool.query(`
-            SELECT *
-            FROM categories
-            ORDER BY id ASC
-        `);
+        const categories = await findAllCategories();
 
-        res.status(200).json(result.rows);
-
+        return res.status(200).json(categories);
     } catch (error) {
-        console.error(error);
+        console.error("Get categories error:", error);
 
-        res.status(500).json({
-            message: "Failed to retrieve categories."
+        return res.status(500).json({
+            message: "Failed to retrieve categories.",
         });
     }
 };
-
 
 // GET /api/categories/:id
 export const getCategoryById = async (req, res) => {
     try {
         const { id } = req.params;
 
-        const result = await pool.query(
-            `
-            SELECT *
-            FROM categories
-            WHERE id = $1
-            `,
-            [id]
-        );
+        const category = await findCategoryById(id);
 
-        if (result.rows.length === 0) {
+        if (!category) {
             return res.status(404).json({
-                message: "Category not found."
+                message: "Category not found.",
             });
         }
 
-        res.status(200).json(result.rows[0]);
-
+        return res.status(200).json(category);
     } catch (error) {
-        console.error(error);
+        console.error("Get category error:", error);
 
-        res.status(500).json({
-            message: "Failed to retrieve category."
+        return res.status(500).json({
+            message: "Failed to retrieve category.",
         });
     }
 };
-
 
 // POST /api/categories
 export const createCategory = async (req, res) => {
     try {
         const { name, description } = req.body;
 
-        if (!name || name.trim() === "") {
+        if (typeof name !== "string" || name.trim() === "") {
             return res.status(400).json({
-                message: "Category name is required."
+                message: "Category name is required.",
             });
         }
 
-        const result = await pool.query(
-            `
-            INSERT INTO categories
-                (name, description)
-            VALUES
-                ($1, $2)
-            RETURNING *
-            `,
-            [
-                name.trim(),
-                description || null
-            ]
+        const category = await createCategoryModel(
+            name.trim(),
+            description
         );
 
-        res.status(201).json(result.rows[0]);
-
+        return res.status(201).json(category);
     } catch (error) {
-        console.error(error);
+        console.error("Create category error:", error);
 
-        res.status(500).json({
-            message: "Failed to create category."
+        return res.status(500).json({
+            message: "Failed to create category.",
         });
     }
 };
-
 
 // PUT /api/categories/:id
 export const updateCategory = async (req, res) => {
@@ -97,76 +76,55 @@ export const updateCategory = async (req, res) => {
         const { id } = req.params;
         const { name, description } = req.body;
 
-        if (!name || name.trim() === "") {
+        if (typeof name !== "string" || name.trim() === "") {
             return res.status(400).json({
-                message: "Category name is required."
+                message: "Category name is required.",
             });
         }
 
-        const result = await pool.query(
-            `
-            UPDATE categories
-            SET
-                name = $1,
-                description = $2,
-                updated_at = NOW()
-            WHERE id = $3
-            RETURNING *
-            `,
-            [
-                name.trim(),
-                description || null,
-                id
-            ]
+        const category = await updateCategoryModel(
+            id,
+            name.trim(),
+            description
         );
 
-        if (result.rows.length === 0) {
+        if (!category) {
             return res.status(404).json({
-                message: "Category not found."
+                message: "Category not found.",
             });
         }
 
-        res.status(200).json(result.rows[0]);
-
+        return res.status(200).json(category);
     } catch (error) {
-        console.error(error);
+        console.error("Update category error:", error);
 
-        res.status(500).json({
-            message: "Failed to update category."
+        return res.status(500).json({
+            message: "Failed to update category.",
         });
     }
 };
-
 
 // DELETE /api/categories/:id
 export const deleteCategory = async (req, res) => {
     try {
         const { id } = req.params;
 
-        const result = await pool.query(
-            `
-            DELETE FROM categories
-            WHERE id = $1
-            RETURNING *
-            `,
-            [id]
-        );
+        const category = await deleteCategoryModel(id);
 
-        if (result.rows.length === 0) {
+        if (!category) {
             return res.status(404).json({
-                message: "Category not found."
+                message: "Category not found.",
             });
         }
 
-        res.status(200).json({
-            message: "Category deleted successfully."
+        return res.status(200).json({
+            message: "Category deleted successfully.",
         });
-
     } catch (error) {
-        console.error(error);
+        console.error("Delete category error:", error);
 
-        res.status(500).json({
-            message: "Failed to delete category."
+        return res.status(500).json({
+            message: "Failed to delete category.",
         });
     }
 };
