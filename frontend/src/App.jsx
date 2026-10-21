@@ -1,53 +1,45 @@
-import { useState } from 'react';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import ProductForm from './components/ProductForm/ProductForm.jsx';
-import ProductTable from './components/ProductTable/ProductTable.jsx';
-import Home from './pages/Home/Home.jsx';
+import { useEffect, useState } from 'react';
+import { getProducts } from './api/products';
 
 function App() {
-  const [selectedProduct, setSelectedProduct] = useState(null);
-  const [showForm, setShowForm] = useState(false);
+  const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
 
-  const handleAdd = () => {
-    setSelectedProduct(null);
-    setShowForm(true);
-  };
+  useEffect(() => {
+    const loadProducts = async () => {
+      try {
+        const data = await getProducts();
+        setProducts(data);
+      } catch (error) {
+        setError(error.message);
+      } finally {
+        setLoading(false);
+      }
+    };
 
-  const handleEdit = (product) => {
-    setSelectedProduct(product);
-    setShowForm(true);
-  };
+    loadProducts();
+  }, []);
 
-  const handleCloseForm = () => {
-    setSelectedProduct(null);
-    setShowForm(false);
-  };
-
-  const handleSuccess = () => {
-    setSelectedProduct(null);
-  };
+  if (loading) return <p>Loading products...</p>;
+  if (error) return <p>Error: {error}</p>;
 
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route
-          path="/products"
-          element={
-            <>
-              {showForm && (
-                <ProductForm
-                  selectedProduct={selectedProduct}
-                  onSuccess={handleSuccess}
-                  onCancel={handleCloseForm}
-                />
-              )}
-              <ProductTable onAdd={handleAdd} onEdit={handleEdit} />
-            </>
-          }
-        />
-      </Routes>
-    </BrowserRouter>
+    <main>
+      <h1>Products</h1>
+
+      {products.length === 0 ? (
+        <p>No products found.</p>
+      ) : (
+        products.map((product) => (
+          <article key={product.id}>
+            <h2>{product.name}</h2>
+            <p>{product.description}</p>
+            <p>Price: ₱{product.price}</p>
+          </article>
+        ))
+      )}
+    </main>
   );
 }
 
