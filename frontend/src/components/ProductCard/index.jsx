@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import styles from './productCard.module.scss';
 
 function ProductCard({ product }) {
@@ -12,20 +13,32 @@ function ProductCard({ product }) {
 
   return (
     <article className={styles.productCard}>
-      <div className={styles.imagePlaceholder} aria-label="Product image unavailable">
+      <div className={styles.imagePlaceholder}>
         <span>No image available</span>
       </div>
 
       <div className={styles.content}>
         <p className={styles.category}>{product.category_name || 'Uncategorized'}</p>
+
         <h2 className={styles.name}>{product.name}</h2>
+
         <p className={styles.description}>{product.description || 'No description available.'}</p>
+
         <p className={styles.price}>
           {formattedPrice === 'Price unavailable' ? formattedPrice : `₱${formattedPrice}`}
         </p>
-        <button type="button" className={styles.viewButton} disabled={!product.is_active}>
+
+        <Link
+          to={`/products/${product.id}`}
+          className={styles.viewButton}
+          aria-disabled={!product.is_active}
+          onClick={(event) => {
+            if (!product.is_active) {
+              event.preventDefault();
+            }
+          }}>
           {product.is_active ? 'View product' : 'Unavailable'}
-        </button>
+        </Link>
       </div>
     </article>
   );

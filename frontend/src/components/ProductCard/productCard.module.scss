@@ -66,16 +66,20 @@
 }
 
 .viewButton {
+    display: block;
     width: 100%;
+    box-sizing: border-box;
     padding: 11px 14px;
     border: 0;
     border-radius: 6px;
     background: #222;
     color: #fff;
     font: inherit;
+    text-align: center;
+    text-decoration: none;
     cursor: pointer;
 
-    &:hover:not(:disabled) {
+    &:hover {
         background: #444;
     }
 
@@ -84,7 +88,7 @@
         outline-offset: 3px;
     }
 
-    &:disabled {
+    &[aria-disabled="true"] {
         background: #ddd;
         color: #777;
         cursor: not-allowed;
