@@ -6,6 +6,9 @@
     padding: 0;
 }
 
+// We will use this main later, to reduct redundancy in the code, and to make it easier to style the main element in the future.
+// main {}
+
 section {
     width: min(1200px, calc(100% - 32px));
     margin: 0 auto;
