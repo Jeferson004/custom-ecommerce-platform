@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { getProductById } from '../../api/products';
+import { addCartItem } from '../../api/cart';
 import styles from './productDetails.module.scss';
 
 function ProductDetails() {
@@ -9,6 +10,25 @@ function ProductDetails() {
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+
+  const [addingToCart, setAddingToCart] = useState(false);
+  const [cartMessage, setCartMessage] = useState('');
+  const [cartError, setCartError] = useState('');
+
+  const handleAddToCart = async () => {
+    setAddingToCart(true);
+    setCartMessage('');
+    setCartError('');
+
+    try {
+      await addCartItem(product.id, 1);
+      setCartMessage('Product added to cart.');
+    } catch (error) {
+      setCartError(error.message || 'Unable to add product to cart.');
+    } finally {
+      setAddingToCart(false);
+    }
+  };
 
   useEffect(() => {
     let ignore = false;
@@ -102,6 +122,14 @@ function ProductDetails() {
           </p>
 
           <p className={styles.description}>{product.description || 'No description available.'}</p>
+
+          <button type="button" onClick={handleAddToCart} disabled={addingToCart}>
+            {addingToCart ? 'Adding...' : 'Add to Cart'}
+          </button>
+
+          {cartMessage && <p role="status">{cartMessage}</p>}
+
+          {cartError && <p role="alert">{cartError}</p>}
         </div>
       </section>
     </main>
