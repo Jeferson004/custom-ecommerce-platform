@@ -4,6 +4,7 @@ import ProductDetails from './pages/ProductDetails';
 import Cart from './pages/Cart/';
 import Register from "./pages/Register";
 import Login from "./pages/Login";
+import Address from "./pages/Address";
 
 
 function App() {
@@ -18,6 +19,7 @@ function App() {
         <Route path="/" element={<ProductPage />} />
         <Route path="/cart" element={<Cart />} />
         <Route path="/products/:id" element={<ProductDetails />} />
+        <Route path="/address" element={<Address />} />
 
       </Routes>
     </BrowserRouter>
