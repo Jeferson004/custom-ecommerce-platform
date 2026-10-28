@@ -1,7 +1,7 @@
 import { useState } from 'react';
 
 import { createProduct, updateProduct } from '../../services/productService.js';
-import s from './ProductForm.module.css';
+import s from './ProductForm.module.scss';
 
 function ProductForm({ selectedProduct, onSuccess, onCancel }) {
   // Remount the fields when the product changes so initial state stays in sync

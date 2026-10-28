@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { getProducts, deleteProduct } from '../../services/productService.js';
-import s from './ProductTable.module.css';
+import s from './ProductTable.module.scss';
 
 function ProductTable({ onAdd, onEdit }) {
   const [products, setProducts] = useState([]);
