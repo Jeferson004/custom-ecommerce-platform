@@ -1,0 +1,221 @@
+.page {
+  width: min(900px, 100% - 32px);
+  margin: 40px auto;
+  color: #222;
+
+  h1 {
+    margin-bottom: 8px;
+  }
+
+  h2 {
+    margin-top: 0;
+    font-size: 1.15rem;
+  }
+}
+
+.backLink {
+  display: inline-block;
+  margin-bottom: 24px;
+  color: #2457c5;
+  text-decoration: none;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+.header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 24px;
+
+  p {
+    margin: 8px 0 0;
+    color: #666;
+  }
+}
+
+.status {
+  padding: 6px 12px;
+  border-radius: 20px;
+  background: #eee;
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-transform: capitalize;
+  white-space: nowrap;
+}
+
+.status_pending {
+  background: #fff0c2;
+  color: #795500;
+}
+
+.status_processing {
+  background: #dceaff;
+  color: #174b96;
+}
+
+.status_shipped {
+  background: #e8ddff;
+  color: #56349b;
+}
+
+.status_delivered {
+  background: #d9f5e3;
+  color: #176b39;
+}
+
+.status_cancelled {
+  background: #ffe0e0;
+  color: #a32121;
+}
+
+.section,
+.cancelSection {
+  margin-bottom: 24px;
+  padding: 24px;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  background: #fff;
+}
+
+.itemList {
+  display: flex;
+  flex-direction: column;
+}
+
+.item {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 18px 0;
+  border-bottom: 1px solid #eee;
+
+  &:first-child {
+    padding-top: 0;
+  }
+
+  h3 {
+    margin: 0 0 10px;
+    font-size: 1rem;
+  }
+
+  p {
+    margin: 5px 0;
+    color: #666;
+    font-size: 0.9rem;
+  }
+
+  > strong {
+    white-space: nowrap;
+  }
+}
+
+.totalRow {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  margin-top: 20px;
+  font-size: 1.1rem;
+}
+
+.detailsList {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin: 0;
+
+  div {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+  }
+
+  dt {
+    color: #666;
+  }
+
+  dd {
+    margin: 0;
+    text-align: right;
+    overflow-wrap: anywhere;
+  }
+}
+
+.cancelSection {
+  p {
+    color: #666;
+    line-height: 1.5;
+  }
+}
+
+.cancelButton {
+  padding: 11px 16px;
+  border: 1px solid #b42318;
+  border-radius: 6px;
+  background: #fff;
+  color: #b42318;
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+
+  &:hover:not(:disabled) {
+    background: #b42318;
+    color: #fff;
+  }
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+}
+
+.error,
+.success {
+  margin-bottom: 20px;
+  padding: 12px 16px;
+  border-radius: 6px;
+}
+
+.error {
+  border: 1px solid #d99;
+  background: #fff2f2;
+  color: #a11;
+}
+
+.success {
+  border: 1px solid #a8d9b5;
+  background: #effaf2;
+  color: #176b39;
+}
+
+@media (max-width: 550px) {
+  .page {
+    margin: 24px auto;
+  }
+
+  .header {
+    flex-direction: column;
+  }
+
+  .section,
+  .cancelSection {
+    padding: 18px;
+  }
+
+  .item {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .detailsList div {
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .detailsList dd {
+    text-align: left;
+  }
+}
