@@ -225,6 +225,10 @@ function Cart() {
               onClick={handleClearCart}>
               {clearing ? 'Clearing...' : 'Clear Cart'}
             </button>
+
+            <Link to="/checkout" className={styles.checkoutButton}>
+              Proceed to Checkout
+            </Link>
           </section>
         </>
       )}
