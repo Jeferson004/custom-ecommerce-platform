@@ -72,4 +72,4 @@ Contributions are welcome.
 
 ## License
 
-This project is open source. Add your license here (for example, MIT) and include a `LICENSE` file in the repository.
+This project is open source and currently under development.
