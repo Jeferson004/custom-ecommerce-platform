@@ -10,6 +10,7 @@ import Orders from './pages/Orders';
 import OrderDetails from './pages/OrderDetails';
 import AdminRoute from './components/Auth/AdminRoute';
 import AdminProducts from './pages/Admin/Products';
+import AdminInventory from './pages/Admin/Inventory';
 
 function App() {
   return (
@@ -29,6 +30,7 @@ function App() {
 
         <Route element={<AdminRoute />}>
           <Route path="/admin/products" element={<AdminProducts />} />
+          <Route path="/admin/inventory" element={<AdminInventory />} />
         </Route>
       </Routes>
     </BrowserRouter>

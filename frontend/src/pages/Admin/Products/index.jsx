@@ -14,6 +14,8 @@ function AdminProducts() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
 
+  const [updatingProductId, setUpdatingProductId] = useState(null);
+
   // Fetch products and categories.
   const fetchData = async () => {
     try {
@@ -76,6 +78,30 @@ function AdminProducts() {
   const handleEditProduct = (product) => {
     setEditingProduct(product);
     setShowForm(true);
+  };
+
+  const handleToggleProductStatus = async (product) => {
+    try {
+      setError('');
+      setUpdatingProductId(product.id);
+
+      const productData = {
+        category_id: product.category_id,
+        name: product.name,
+        description: product.description,
+        price: Number(product.price),
+        sku: product.sku,
+        is_active: !product.is_active,
+      };
+
+      await updateProduct(product.id, productData);
+
+      await fetchData();
+    } catch (error) {
+      setError(error.message || 'Unable to update product status.');
+    } finally {
+      setUpdatingProductId(null);
+    }
   };
 
   // Open the form in create mode.
@@ -148,6 +174,17 @@ function AdminProducts() {
                   <td>
                     <button type="button" onClick={() => handleEditProduct(product)}>
                       Edit
+                    </button>
+
+                    <button
+                      type="button"
+                      onClick={() => handleToggleProductStatus(product)}
+                      disabled={updatingProductId === product.id}>
+                      {updatingProductId === product.id
+                        ? 'Updating...'
+                        : product.is_active
+                          ? 'Deactivate'
+                          : 'Activate'}
                     </button>
                   </td>
                 </tr>
