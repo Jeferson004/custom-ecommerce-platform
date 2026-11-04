@@ -182,6 +182,7 @@ export const createOrder = async (
                 quantity,
                 price,
                 subtotal,
+                quantity_before: availableStock,
             });
         }
 
@@ -226,12 +227,43 @@ export const createOrder = async (
                 ]
             );
 
-            await client.query(
+            // Deduct inventory.
+            const quantityAfter = item.quantity_before - item.quantity;
+
+            const inventoryUpdateResult = await client.query(
                 `UPDATE inventory
-                 SET quantity = quantity - $1,
-                     updated_at = NOW()
-                 WHERE product_id = $2`,
-                [item.quantity, item.product_id]
+                SET quantity = $1,
+                    updated_at = NOW()
+                WHERE product_id = $2
+                RETURNING product_id`,
+                [quantityAfter, item.product_id]
+            );
+
+            if (inventoryUpdateResult.rows.length === 0) {
+                throw new Error(
+                    `Inventory not found for product ${item.product_id}.`
+                );
+            }
+
+            // Record inventory transaction.
+            await client.query(
+                `INSERT INTO inventory_transactions (
+                    product_id,
+                    quantity_before,
+                    quantity_change,
+                    quantity_after,
+                    reason,
+                    reference_id
+                )
+                VALUES ($1, $2, $3, $4, $5, $6)`,
+                [
+                    item.product_id,
+                    item.quantity_before,
+                    -item.quantity,
+                    quantityAfter,
+                    "sale",
+                    order.id,
+                ]
             );
         }
 
@@ -300,13 +332,13 @@ export const cancelOrder = async (id, profileId) => {
 
         // Restore stock reserved by this order.
         for (const item of itemsResult.rows) {
+            // Get the current inventory and lock the row.
             const inventoryResult = await client.query(
-                `UPDATE inventory
-                 SET quantity = quantity + $1,
-                     updated_at = NOW()
-                 WHERE product_id = $2
-                 RETURNING product_id`,
-                [item.quantity, item.product_id]
+                `SELECT quantity
+                 FROM inventory
+                 WHERE product_id = $1
+                 FOR UPDATE`,
+                [item.product_id]
             );
 
             if (inventoryResult.rows.length === 0) {
@@ -314,6 +346,52 @@ export const cancelOrder = async (id, profileId) => {
                     `Inventory not found for product ${item.product_id}.`
                 );
             }
+
+            // Get the current stock.
+            const quantityBefore = Number(
+                inventoryResult.rows[0].quantity
+            );
+
+            // Calculate the restored stock.
+            const quantityChange = Number(item.quantity);
+            const quantityAfter = quantityBefore + quantityChange;
+
+            // Restore inventory.
+            const inventoryUpdateResult = await client.query(
+                `UPDATE inventory
+                 SET quantity = $1,
+                     updated_at = NOW()
+                 WHERE product_id = $2
+                 RETURNING product_id`,
+                [quantityAfter, item.product_id]
+            );
+
+            if (inventoryUpdateResult.rows.length === 0) {
+                throw new Error(
+                    `Failed to restore inventory for product ${item.product_id}.`
+                );
+            }
+
+            // Record inventory transaction.
+            await client.query(
+                `INSERT INTO inventory_transactions (
+                    product_id,
+                    quantity_before,
+                    quantity_change,
+                    quantity_after,
+                    reason,
+                    reference_id
+                )
+                VALUES ($1, $2, $3, $4, $5, $6)`,
+                [
+                    item.product_id,
+                    quantityBefore,
+                    quantityChange,
+                    quantityAfter,
+                    "cancellation",
+                    order.id,
+                ]
+            );
         }
 
         const updatedOrder = await client.query(
