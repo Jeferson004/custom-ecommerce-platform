@@ -8,6 +8,8 @@ import InventoryForm from './InventoryForm';
 import StockUpdateForm from './StockUpdateForm';
 import styles from './inventory.module.scss';
 
+const LOW_STOCK_THRESHOLD = 5;
+
 function AdminInventory() {
   const [inventory, setInventory] = useState([]);
   const [products, setProducts] = useState([]);
@@ -101,6 +103,29 @@ function AdminInventory() {
     return <p role="status">Loading inventory...</p>;
   }
 
+  const getStockStatus = (quantity) => {
+    const stock = Number(quantity);
+
+    if (stock === 0) {
+      return {
+        label: 'Out of Stock',
+        className: styles.outOfStock,
+      };
+    }
+
+    if (stock <= LOW_STOCK_THRESHOLD) {
+      return {
+        label: 'Low Stock',
+        className: styles.lowStock,
+      };
+    }
+
+    return {
+      label: 'In Stock',
+      className: styles.inStock,
+    };
+  };
+
   return (
     <main className={styles.adminInventory}>
       <header className={styles.header}>
@@ -151,32 +176,41 @@ function AdminInventory() {
                 <th>ID</th>
                 <th>Product</th>
                 <th>Available Stock</th>
+                <th>Status</th>
                 <th>Last Updated</th>
                 <th>Actions</th>
               </tr>
             </thead>
 
             <tbody>
-              {inventory.map((item) => (
-                <tr key={item.id}>
-                  <td>{item.product_id}</td>
+              {inventory.map((item) => {
+                const stockStatus = getStockStatus(item.quantity);
 
-                  <td>{item.product_name}</td>
+                return (
+                  <tr key={item.id}>
+                    <td>{item.product_id}</td>
 
-                  <td>{item.quantity}</td>
+                    <td>{item.product_name}</td>
 
-                  <td>{new Date(item.updated_at).toLocaleString()}</td>
+                    <td>{item.quantity}</td>
 
-                  <td>
-                    <button
-                      type="button"
-                      disabled={updatingProductId === item.product_id}
-                      onClick={() => handleOpenUpdateForm(item)}>
-                      Update Stock
-                    </button>
-                  </td>
-                </tr>
-              ))}
+                    <td>
+                      <span className={stockStatus.className}>{stockStatus.label}</span>
+                    </td>
+
+                    <td>{new Date(item.updated_at).toLocaleString()}</td>
+
+                    <td>
+                      <button
+                        type="button"
+                        disabled={updatingProductId === item.product_id}
+                        onClick={() => handleOpenUpdateForm(item)}>
+                        Update Stock
+                      </button>
+                    </td>
+                  </tr>
+                );
+              })}
             </tbody>
           </table>
         )}
