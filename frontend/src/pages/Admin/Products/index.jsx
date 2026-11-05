@@ -121,7 +121,7 @@ function AdminProducts() {
   }
 
   return (
-    <main className={styles.adminProducts}>
+    <main className={styles.main}>
       <header className={styles.header}>
         <div>
           <h1>Product Management</h1>
@@ -151,7 +151,7 @@ function AdminProducts() {
         {products.length === 0 ? (
           <p>No products found.</p>
         ) : (
-          <table>
+          <table className={styles.table}>
             <thead>
               <tr>
                 <th>ID</th>
