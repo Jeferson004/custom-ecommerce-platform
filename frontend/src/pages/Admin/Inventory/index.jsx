@@ -1,6 +1,11 @@
 import { useEffect, useState } from 'react';
 
-import { getInventory, createInventory, updateInventory } from '../../../api/inventory';
+import {
+  getInventory,
+  createInventory,
+  updateInventory,
+  getInventoryTransactions,
+} from '../../../api/inventory';
 
 import { getProducts } from '../../../api/products';
 
@@ -22,15 +27,22 @@ function AdminInventory() {
 
   const [selectedItem, setSelectedItem] = useState(null);
 
-  // Fetch inventory and products.
+  const [transactions, setTransactions] = useState([]);
+
+  // Fetch inventory, products, and transaction history.
   const fetchData = async () => {
     try {
       setError('');
 
-      const [inventoryData, productsData] = await Promise.all([getInventory(), getProducts()]);
+      const [inventoryData, productsData, transactionsData] = await Promise.all([
+        getInventory(),
+        getProducts(),
+        getInventoryTransactions(),
+      ]);
 
       setInventory(inventoryData);
       setProducts(productsData);
+      setTransactions(transactionsData);
     } catch (error) {
       setError(error.message || 'Unable to load inventory.');
       throw error;
@@ -43,11 +55,16 @@ function AdminInventory() {
 
     const loadData = async () => {
       try {
-        const [inventoryData, productsData] = await Promise.all([getInventory(), getProducts()]);
+        const [inventoryData, productsData, transactionsData] = await Promise.all([
+          getInventory(),
+          getProducts(),
+          getInventoryTransactions(),
+        ]);
 
         if (!ignore) {
           setInventory(inventoryData);
           setProducts(productsData);
+          setTransactions(transactionsData);
         }
       } catch (error) {
         if (!ignore) {
@@ -127,7 +144,7 @@ function AdminInventory() {
   };
 
   return (
-    <main className={styles.adminInventory}>
+    <main className={styles.main}>
       <header className={styles.header}>
         <div>
           <h1>Inventory Management</h1>
@@ -170,7 +187,7 @@ function AdminInventory() {
         {inventory.length === 0 ? (
           <p>No inventory records found.</p>
         ) : (
-          <table>
+          <table className={styles.table}>
             <thead>
               <tr>
                 <th>ID</th>
@@ -211,6 +228,54 @@ function AdminInventory() {
                   </tr>
                 );
               })}
+            </tbody>
+          </table>
+        )}
+      </section>
+
+      <section className={styles.inventoryList}>
+        <h2>Inventory Transaction History ({transactions.length})</h2>
+
+        {transactions.length === 0 ? (
+          <p>No inventory transactions found.</p>
+        ) : (
+          <table className={styles.table}>
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Product</th>
+                <th>Previous Stock</th>
+                <th>Change</th>
+                <th>New Stock</th>
+                <th>Reason</th>
+                <th>Updated By</th>
+                <th>Date</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              {transactions.map((transaction) => (
+                <tr key={transaction.id}>
+                  <td>{transaction.id}</td>
+
+                  <td>{transaction.product_name}</td>
+
+                  <td>{transaction.quantity_before}</td>
+
+                  <td>
+                    {transaction.quantity_change > 0 ? '+' : ''}
+                    {transaction.quantity_change}
+                  </td>
+
+                  <td>{transaction.quantity_after}</td>
+
+                  <td>{transaction.reason}</td>
+
+                  <td>{transaction.adjusted_by || 'System'}</td>
+
+                  <td>{new Date(transaction.created_at).toLocaleString()}</td>
+                </tr>
+              ))}
             </tbody>
           </table>
         )}

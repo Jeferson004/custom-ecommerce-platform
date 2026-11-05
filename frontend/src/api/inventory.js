@@ -28,3 +28,8 @@ export const updateInventory = (productId, quantity) => {
     body: JSON.stringify({ quantity }),
   });
 };
+
+// Retrieve inventory transaction history.
+export const getInventoryTransactions = () => {
+  return apiRequest("/api/inventory/transactions");
+};

@@ -3,6 +3,7 @@ import {
     findInventoryByProductId,
     findProductById,
     findInventoryRecordByProductId,
+    findAllInventoryTransactions,
     createInventory as createInventoryModel,
     updateInventory as updateInventoryModel,
 } from "../models/inventoryModel.js";
@@ -104,7 +105,8 @@ export const createInventory = async (req, res) => {
 
         const inventory = await createInventoryModel(
             product_id,
-            Number(quantity)
+            Number(quantity),
+            req.user.id
         );
 
         return res.status(201).json(inventory);
@@ -150,7 +152,8 @@ export const updateInventory = async (req, res) => {
 
         const inventory = await updateInventoryModel(
             productId,
-            Number(quantity)
+            Number(quantity),
+            req.user.id
         );
 
         if (!inventory) {
@@ -165,6 +168,21 @@ export const updateInventory = async (req, res) => {
 
         return res.status(500).json({
             message: "Failed to update inventory.",
+        });
+    }
+};
+
+// GET /api/inventory/transactions
+export const getInventoryTransactions = async (req, res) => {
+    try {
+        const transactions = await findAllInventoryTransactions();
+
+        return res.status(200).json(transactions);
+    } catch (error) {
+        console.error("Get inventory transactions error:", error);
+
+        return res.status(500).json({
+            message: "Failed to retrieve inventory transactions.",
         });
     }
 };
