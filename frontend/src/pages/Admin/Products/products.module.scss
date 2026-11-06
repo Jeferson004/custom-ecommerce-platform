@@ -1,19 +1,17 @@
-.main {
-  width: min(1200px, 100% - 32px);
-  margin-inline: auto;
-  padding-block: 40px;
-  
+.container {
+  width: 100%;
+
   .header {
     margin-bottom: 28px;
   }
 
   .productList {
     .table {
-        width: 100%;
+      width: 100%;
 
-        thead tr th {
-          text-align: left;
-        }
+      thead tr th {
+        text-align: left;
+      }
     }
   }
 }

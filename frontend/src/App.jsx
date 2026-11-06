@@ -12,6 +12,8 @@ import AdminRoute from './components/Auth/AdminRoute';
 import AdminProducts from './pages/Admin/Products';
 import AdminInventory from './pages/Admin/Inventory';
 import AdminTransactions from './pages/Admin/Transactions';
+import AdminDashboard from './pages/Admin/Dashboard';
+import AdminLayout from './layouts/AdminLayout';
 
 function App() {
   return (
@@ -30,9 +32,14 @@ function App() {
         <Route path="/orders/:id" element={<OrderDetails />} />
 
         <Route element={<AdminRoute />}>
-          <Route path="/admin/products" element={<AdminProducts />} />
-          <Route path="/admin/inventory" element={<AdminInventory />} />
-          <Route path="/admin/transactions" element={<AdminTransactions />} />
+          <Route path="/admin" element={<AdminLayout />}>
+            <Route index element={<AdminDashboard />} />
+
+            <Route path="dashboard" element={<AdminDashboard />} />
+            <Route path="products" element={<AdminProducts />} />
+            <Route path="inventory" element={<AdminInventory />} />
+            <Route path="transactions" element={<AdminTransactions />} />
+          </Route>
         </Route>
       </Routes>
     </BrowserRouter>

@@ -42,7 +42,7 @@ function AdminTransactions() {
   }
 
   return (
-    <main className={styles.main}>
+    <div className={styles.container}>
       <header className={styles.header}>
         <div>
           <h1>Inventory Transactions</h1>
@@ -92,7 +92,7 @@ function AdminTransactions() {
           </table>
         )}
       </section>
-    </main>
+    </div>
   );
 }
 
