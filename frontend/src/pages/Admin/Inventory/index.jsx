@@ -126,7 +126,7 @@ function AdminInventory() {
 
   return (
     <div className={styles.container}>
-      <header className={styles.header}>
+      <div className={styles.header}>
         <div>
           <h1>Inventory Management</h1>
           <p>Monitor and manage your product stock.</p>
@@ -140,7 +140,7 @@ function AdminInventory() {
           }}>
           {showForm ? 'Close Form' : 'Add Inventory'}
         </button>
-      </header>
+      </div>
 
       {error && <p role="alert">{error}</p>}
 
