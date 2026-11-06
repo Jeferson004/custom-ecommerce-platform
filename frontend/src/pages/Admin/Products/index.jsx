@@ -122,7 +122,7 @@ function AdminProducts() {
 
   return (
     <div className={styles.container}>
-      <header className={styles.header}>
+      <div className={styles.header}>
         <div>
           <h1>Product Management</h1>
           <p>Manage your store products.</p>
@@ -131,7 +131,7 @@ function AdminProducts() {
         <button type="button" onClick={showForm ? handleCloseForm : handleAddProduct}>
           {showForm ? 'Close Form' : 'Add Product'}
         </button>
-      </header>
+      </div>
 
       {error && <p role="alert">{error}</p>}
 

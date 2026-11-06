@@ -43,12 +43,12 @@ function AdminTransactions() {
 
   return (
     <div className={styles.container}>
-      <header className={styles.header}>
+      <div className={styles.header}>
         <div>
           <h1>Inventory Transactions</h1>
           <p>Review and monitor inventory stock movements.</p>
         </div>
-      </header>
+      </div>
 
       {error && <p role="alert">{error}</p>}
 
