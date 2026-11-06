@@ -1,14 +1,6 @@
 import { useEffect, useState } from 'react';
-
-import {
-  getInventory,
-  createInventory,
-  updateInventory,
-  getInventoryTransactions,
-} from '../../../api/inventory';
-
+import { getInventory, createInventory, updateInventory } from '../../../api/inventory';
 import { getProducts } from '../../../api/products';
-
 import InventoryForm from './InventoryForm';
 import StockUpdateForm from './StockUpdateForm';
 import styles from './inventory.module.scss';
@@ -18,34 +10,27 @@ const LOW_STOCK_THRESHOLD = 5;
 function AdminInventory() {
   const [inventory, setInventory] = useState([]);
   const [products, setProducts] = useState([]);
-
   const [showForm, setShowForm] = useState(false);
   const [updatingProductId, setUpdatingProductId] = useState(null);
-
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
-
   const [selectedItem, setSelectedItem] = useState(null);
-
-  const [transactions, setTransactions] = useState([]);
 
   // Fetch inventory, products, and transaction history.
   const fetchData = async () => {
     try {
+      setLoading(true);
       setError('');
 
-      const [inventoryData, productsData, transactionsData] = await Promise.all([
-        getInventory(),
-        getProducts(),
-        getInventoryTransactions(),
-      ]);
+      const [inventoryData, productsData] = await Promise.all([getInventory(), getProducts()]);
 
       setInventory(inventoryData);
       setProducts(productsData);
-      setTransactions(transactionsData);
     } catch (error) {
-      setError(error.message || 'Unable to load inventory.');
-      throw error;
+      console.error('Fetch inventory data error:', error);
+      setError(error.message || 'Failed to fetch inventory data.');
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -53,23 +38,19 @@ function AdminInventory() {
   useEffect(() => {
     let ignore = false;
 
-    const loadData = async () => {
+    const loadInitialData = async () => {
       try {
-        const [inventoryData, productsData, transactionsData] = await Promise.all([
-          getInventory(),
-          getProducts(),
-          getInventoryTransactions(),
-        ]);
+        const [inventoryData, productsData] = await Promise.all([getInventory(), getProducts()]);
 
-        if (!ignore) {
-          setInventory(inventoryData);
-          setProducts(productsData);
-          setTransactions(transactionsData);
-        }
+        if (ignore) return;
+
+        setInventory(inventoryData);
+        setProducts(productsData);
       } catch (error) {
-        if (!ignore) {
-          setError(error.message || 'Unable to load inventory.');
-        }
+        if (ignore) return;
+
+        console.error('Fetch inventory data error:', error);
+        setError(error.message || 'Failed to fetch inventory data.');
       } finally {
         if (!ignore) {
           setLoading(false);
@@ -77,7 +58,7 @@ function AdminInventory() {
       }
     };
 
-    loadData();
+    loadInitialData();
 
     return () => {
       ignore = true;
@@ -228,54 +209,6 @@ function AdminInventory() {
                   </tr>
                 );
               })}
-            </tbody>
-          </table>
-        )}
-      </section>
-
-      <section className={styles.inventoryList}>
-        <h2>Inventory Transaction History ({transactions.length})</h2>
-
-        {transactions.length === 0 ? (
-          <p>No inventory transactions found.</p>
-        ) : (
-          <table className={styles.table}>
-            <thead>
-              <tr>
-                <th>ID</th>
-                <th>Product</th>
-                <th>Previous Stock</th>
-                <th>Change</th>
-                <th>New Stock</th>
-                <th>Reason</th>
-                <th>Updated By</th>
-                <th>Date</th>
-              </tr>
-            </thead>
-
-            <tbody>
-              {transactions.map((transaction) => (
-                <tr key={transaction.id}>
-                  <td>{transaction.id}</td>
-
-                  <td>{transaction.product_name}</td>
-
-                  <td>{transaction.quantity_before}</td>
-
-                  <td>
-                    {transaction.quantity_change > 0 ? '+' : ''}
-                    {transaction.quantity_change}
-                  </td>
-
-                  <td>{transaction.quantity_after}</td>
-
-                  <td>{transaction.reason}</td>
-
-                  <td>{transaction.adjusted_by || 'System'}</td>
-
-                  <td>{new Date(transaction.created_at).toLocaleString()}</td>
-                </tr>
-              ))}
             </tbody>
           </table>
         )}
