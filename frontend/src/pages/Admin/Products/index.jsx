@@ -121,7 +121,7 @@ function AdminProducts() {
   }
 
   return (
-    <main className={styles.main}>
+    <div className={styles.container}>
       <header className={styles.header}>
         <div>
           <h1>Product Management</h1>
@@ -193,7 +193,7 @@ function AdminProducts() {
           </table>
         )}
       </section>
-    </main>
+    </div>
   );
 }
 

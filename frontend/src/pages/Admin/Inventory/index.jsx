@@ -125,7 +125,7 @@ function AdminInventory() {
   };
 
   return (
-    <main className={styles.main}>
+    <div className={styles.container}>
       <header className={styles.header}>
         <div>
           <h1>Inventory Management</h1>
@@ -213,7 +213,7 @@ function AdminInventory() {
           </table>
         )}
       </section>
-    </main>
+    </div>
   );
 }
 
