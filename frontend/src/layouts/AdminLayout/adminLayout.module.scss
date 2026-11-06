@@ -6,7 +6,8 @@
 .mainContent {
   flex: 1;
   min-width: 0;
-  padding: 24px;
+  display: flex;
+  flex-direction: column;
 }
 
 .sidebar {
@@ -52,4 +53,86 @@
   background-color: #374151;
   color: #ffffff;
   font-weight: 600;
+}
+
+.header {
+  min-height: 72px;
+  padding: 0 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid #e5e7eb;
+  background-color: #ffffff;
+
+  h1 {
+    margin: 0;
+    font-size: 20px;
+    font-weight: 600;
+  }
+}
+
+.headerActions {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.pageContent {
+  flex: 1;
+  padding: 24px;
+  min-width: 0;
+}
+
+.menuButton {
+  display: none;
+  border: none;
+  background: none;
+  font-size: 24px;
+  cursor: pointer;
+}
+
+.sidebarOverlay {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1001;
+    width: 250px;
+    height: 100vh;
+    min-height: 100vh;
+    transform: translateX(-100%);
+    transition: transform 0.3s ease;
+  }
+
+  .sidebarOpen {
+    transform: translateX(0);
+  }
+
+  .sidebarOverlay {
+    display: block;
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    width: 100%;
+    height: 100%;
+    border: none;
+    background: rgba(0, 0, 0, 0.4);
+  }
+
+  .menuButton {
+    display: block;
+  }
+
+  .header {
+    padding: 0 16px;
+    gap: 16px;
+  }
+
+  .pageContent {
+    padding: 16px;
+  }
 }
