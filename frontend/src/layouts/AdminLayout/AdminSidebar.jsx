@@ -1,7 +1,7 @@
 import { NavLink } from 'react-router-dom';
 import styles from './adminLayout.module.scss';
 
-function AdminSidebar() {
+function AdminSidebar({ isOpen, onNavigate }) {
   const navigation = [
     {
       label: 'Dashboard',
@@ -22,9 +22,9 @@ function AdminSidebar() {
   ];
 
   return (
-    <aside className={styles.sidebar}>
+    <aside className={`${styles.sidebar} ${isOpen ? styles.sidebarOpen : ''}`}>
       <div className={styles.sidebarHeader}>
-        <h2>Admin Panel</h2>
+        <h2>Lorem</h2>
       </div>
 
       <nav className={styles.navigation}>
@@ -32,6 +32,7 @@ function AdminSidebar() {
           <NavLink
             key={item.path}
             to={item.path}
+            onClick={onNavigate}
             className={({ isActive }) => (isActive ? styles.activeLink : styles.navLink)}>
             {item.label}
           </NavLink>
