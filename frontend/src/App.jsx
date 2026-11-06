@@ -11,6 +11,7 @@ import OrderDetails from './pages/OrderDetails';
 import AdminRoute from './components/Auth/AdminRoute';
 import AdminProducts from './pages/Admin/Products';
 import AdminInventory from './pages/Admin/Inventory';
+import AdminTransactions from './pages/Admin/Transactions';
 
 function App() {
   return (
@@ -31,6 +32,7 @@ function App() {
         <Route element={<AdminRoute />}>
           <Route path="/admin/products" element={<AdminProducts />} />
           <Route path="/admin/inventory" element={<AdminInventory />} />
+          <Route path="/admin/transactions" element={<AdminTransactions />} />
         </Route>
       </Routes>
     </BrowserRouter>
