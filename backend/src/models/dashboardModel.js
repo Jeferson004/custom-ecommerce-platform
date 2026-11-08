@@ -65,3 +65,58 @@ export const getRecentOrders = async () => {
     return result.rows;
 };
 
+
+export const getLowStockProducts = async () => {
+    const result = await pool.query(`
+        SELECT
+            p.id AS product_id,
+            p.name AS product_name,
+            p.sku,
+            i.quantity,
+            i.low_stock_threshold,
+            i.updated_at
+        FROM public.inventory i
+        INNER JOIN public.products p
+            ON p.id = i.product_id
+        WHERE
+            p.is_active = TRUE
+            AND i.quantity <= i.low_stock_threshold
+        ORDER BY
+            i.quantity ASC,
+            p.name ASC
+    `);
+
+    return result.rows;
+};
+
+
+export const getSalesOverview = async () => {
+    const result = await pool.query(`
+        WITH date_series AS (
+            SELECT generate_series(
+                (CURRENT_TIMESTAMP AT TIME ZONE 'Asia/Manila')::DATE - 6,
+                (CURRENT_TIMESTAMP AT TIME ZONE 'Asia/Manila')::DATE,
+                INTERVAL '1 day'
+            )::DATE AS sales_date
+        )
+        SELECT
+            TO_CHAR(ds.sales_date, 'YYYY-MM-DD') AS sales_date,
+            COALESCE(SUM(pay.amount), 0) AS revenue
+        FROM date_series ds
+        LEFT JOIN public.payments pay
+            ON pay.status = 'completed'
+            AND pay.created_at >= (
+                ds.sales_date::TIMESTAMP
+                AT TIME ZONE 'Asia/Manila'
+            )
+            AND pay.created_at < (
+                (ds.sales_date + 1)::TIMESTAMP
+                AT TIME ZONE 'Asia/Manila'
+            )
+        GROUP BY ds.sales_date
+        ORDER BY ds.sales_date ASC
+    `);
+
+    return result.rows;
+};
+

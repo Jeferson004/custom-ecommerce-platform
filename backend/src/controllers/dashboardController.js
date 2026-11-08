@@ -1,6 +1,8 @@
 import {
     getDashboardOverview,
-    getRecentOrders
+    getRecentOrders,
+    getLowStockProducts,
+    getSalesOverview
 } from "../models/dashboardModel.js";
 
 export const getDashboardOverviewController = async (req, res) => {
@@ -36,6 +38,44 @@ export const getRecentOrdersController = async (req, res) => {
         return res.status(500).json({
             success: false,
             message: "Failed to retrieve recent orders.",
+        });
+    }
+};
+
+
+export const getLowStockProductsController = async (req, res) => {
+    try {
+        const products = await getLowStockProducts();
+
+        return res.status(200).json({
+            success: true,
+            data: products,
+        });
+    } catch (error) {
+        console.error("Low-stock products error:", error);
+
+        return res.status(500).json({
+            success: false,
+            message: "Failed to retrieve low-stock products.",
+        });
+    }
+};
+
+
+export const getSalesOverviewController = async (req, res) => {
+    try {
+        const sales = await getSalesOverview();
+
+        return res.status(200).json({
+            success: true,
+            data: sales,
+        });
+    } catch (error) {
+        console.error("Sales overview error:", error);
+
+        return res.status(500).json({
+            success: false,
+            message: "Failed to retrieve sales overview.",
         });
     }
 };

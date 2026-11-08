@@ -1,7 +1,9 @@
 import express from "express";
 import {
     getDashboardOverviewController,
-    getRecentOrdersController
+    getRecentOrdersController,
+    getLowStockProductsController,
+    getSalesOverviewController
 } from "../controllers/dashboardController.js";
 import { authenticateUser } from "../middlewares/authMiddleware.js";
 import { authorizeRoles } from "../middlewares/authorizeRoles.js";
@@ -13,5 +15,8 @@ router.use(authorizeRoles("staff", "admin"));
 
 router.get("/overview", getDashboardOverviewController);
 router.get("/recent-orders", getRecentOrdersController);
+router.get("/low-stock", getLowStockProductsController);
+router.get("/sales-overview", getSalesOverviewController);
+
 
 export default router;
