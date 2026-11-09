@@ -8,6 +8,7 @@ import {
 } from '../../../api/dashboard';
 
 import SalesChart from '../../../components/Admin/SalesChart';
+import styles from './dashboard.module.scss';
 
 function AdminDashboard() {
   const [overview, setOverview] = useState(null);
@@ -54,153 +55,139 @@ function AdminDashboard() {
   };
 
   if (loading) {
-    return <p>Loading dashboard...</p>;
+    return <p className={styles.stateMessage}>Loading dashboard...</p>;
   }
 
   if (error) {
-    return <p role="alert">{error}</p>;
+    return (
+      <p className={styles.errorMessage} role="alert">
+        {error}
+      </p>
+    );
   }
 
   if (!overview) {
-    return <p>No dashboard data available.</p>;
+    return <p className={styles.stateMessage}>No dashboard data available.</p>;
   }
 
   return (
-    <div>
-      <h1>Dashboard</h1>
+    <main className={styles.container}>
+      <header className={styles.dashboardHeader}>
+        <h1>Dashboard</h1>
+        <p>Overview of your store's performance.</p>
+      </header>
 
       {/* Overview metrics */}
-      <section>
+      <section className={styles.dashboardOverview}>
         <h2>Overview</h2>
 
-        <div>
-          <article>
+        <div className={styles.overviewGrid}>
+          <article className={styles.overviewCard}>
             <h3>Total Products</h3>
             <p>{overview.total_products}</p>
           </article>
 
-          <article>
+          <article className={styles.overviewCard}>
             <h3>Total Orders</h3>
             <p>{overview.total_orders}</p>
           </article>
 
-          <article>
+          <article className={styles.overviewCard}>
             <h3>Total Customers</h3>
             <p>{overview.total_customers}</p>
           </article>
 
-          <article>
+          <article className={styles.overviewCard}>
             <h3>Total Revenue</h3>
             <p>{formatCurrency(overview.total_revenue)}</p>
           </article>
 
-          <article>
+          <article className={styles.overviewCard}>
             <h3>Pending Orders</h3>
             <p>{overview.pending_orders}</p>
           </article>
 
-          <article>
+          <article className={styles.overviewCard}>
             <h3>Low-stock Products</h3>
             <p>{overview.low_stock_products}</p>
           </article>
         </div>
       </section>
 
-      {/* Recent orders */}
-      <section>
-        <h2>Recent Orders</h2>
-
-        {recentOrders.length === 0 ? (
-          <p>No recent orders found.</p>
-        ) : (
-          <table>
-            <thead>
-              <tr>
-                <th>Order ID</th>
-                <th>Customer</th>
-                <th>Status</th>
-                <th>Total</th>
-                <th>Date</th>
-              </tr>
-            </thead>
-
-            <tbody>
-              {recentOrders.map((order) => (
-                <tr key={order.order_id}>
-                  <td>#{order.order_id}</td>
-                  <td>{order.customer_name}</td>
-                  <td>{order.status}</td>
-                  <td>{formatCurrency(order.total_amount)}</td>
-                  <td>{new Date(order.created_at).toLocaleDateString('en-PH')}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        )}
-      </section>
-
-      {/* Low-stock products */}
-      <section>
-        <h2>Low-stock Products</h2>
-
-        {lowStockProducts.length === 0 ? (
-          <p>No low-stock products found.</p>
-        ) : (
-          <table>
-            <thead>
-              <tr>
-                <th>Product</th>
-                <th>SKU</th>
-                <th>Current Stock</th>
-                <th>Threshold</th>
-              </tr>
-            </thead>
-
-            <tbody>
-              {lowStockProducts.map((product) => (
-                <tr key={product.product_id}>
-                  <td>{product.product_name}</td>
-                  <td>{product.sku || 'N/A'}</td>
-                  <td>{product.quantity}</td>
-                  <td>{product.low_stock_threshold}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        )}
-      </section>
-
       {/* Sales overview */}
-      {/* <section>
-        <h2>Sales Overview (Last 7 Days)</h2>
-
-        {salesOverview.length === 0 ? (
-          <p>No sales data available.</p>
-        ) : (
-          <table>
-            <thead>
-              <tr>
-                <th>Date</th>
-                <th>Revenue</th>
-              </tr>
-            </thead>
-
-            <tbody>
-              {salesOverview.map((sale) => (
-                <tr key={sale.sales_date}>
-                  <td>{sale.sales_date}</td>
-                  <td>{formatCurrency(sale.revenue)}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        )}
-      </section> */}
-
-      <section>
+      <section className={styles.dashboardSales}>
         <SalesChart data={salesOverview} />
       </section>
-    </div>
+
+      {/* Recent orders and low-stock products */}
+      <div className={styles.dashboardBottomGrid}>
+        <section className={styles.dashboardSection}>
+          <h2>Recent Orders</h2>
+
+          {recentOrders.length === 0 ? (
+            <p className={styles.emptyMessage}>No recent orders found.</p>
+          ) : (
+            <div className={styles.tableWrapper}>
+              <table className={styles.dataTable}>
+                <thead>
+                  <tr>
+                    <th>Order ID</th>
+                    <th>Customer</th>
+                    <th>Status</th>
+                    <th>Total</th>
+                    <th>Date</th>
+                  </tr>
+                </thead>
+
+                <tbody>
+                  {recentOrders.map((order) => (
+                    <tr key={order.order_id}>
+                      <td>#{order.order_id}</td>
+                      <td>{order.customer_name}</td>
+                      <td>{order.status}</td>
+                      <td>{formatCurrency(order.total_amount)}</td>
+                      <td>{new Date(order.created_at).toLocaleDateString('en-PH')}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )}
+        </section>
+
+        <section className={styles.dashboardSection}>
+          <h2>Low-stock Products</h2>
+
+          {lowStockProducts.length === 0 ? (
+            <p className={styles.emptyMessage}>No low-stock products found.</p>
+          ) : (
+            <div className={styles.tableWrapper}>
+              <table className={styles.dataTable}>
+                <thead>
+                  <tr>
+                    <th>Product</th>
+                    <th>SKU</th>
+                    <th>Current Stock</th>
+                    <th>Threshold</th>
+                  </tr>
+                </thead>
+
+                <tbody>
+                  {lowStockProducts.map((product) => (
+                    <tr key={product.product_id}>
+                      <td>{product.product_name}</td>
+                      <td>{product.sku || 'N/A'}</td>
+                      <td>{product.quantity}</td>
+                      <td>{product.low_stock_threshold}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )}
+        </section>
+      </div>
+    </main>
   );
 }
 
