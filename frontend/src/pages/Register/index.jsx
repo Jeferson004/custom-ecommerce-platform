@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { supabase } from "../../configs/supabase";
@@ -6,6 +7,7 @@ import styles from "./register.module.scss";
 function Register() {
     const navigate = useNavigate();
 
+    const [name, setName] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
@@ -18,6 +20,13 @@ function Register() {
 
         setError("");
         setMessage("");
+
+        const trimmedName = name.trim();
+
+        if (!trimmedName) {
+            setError("Name is required.");
+            return;
+        }
 
         if (password !== confirmPassword) {
             setError("Passwords do not match.");
@@ -35,6 +44,11 @@ function Register() {
             const { data, error } = await supabase.auth.signUp({
                 email,
                 password,
+                options: {
+                    data: {
+                        name: trimmedName,
+                    },
+                },
             });
 
             if (error) {
@@ -61,6 +75,17 @@ function Register() {
             <p>Register to start shopping.</p>
 
             <form onSubmit={handleSubmit}>
+                <label htmlFor="name">Full name</label>
+                <input
+                    id="name"
+                    type="text"
+                    autoComplete="name"
+                    value={name}
+                    onChange={(event) => setName(event.target.value)}
+                    maxLength={100}
+                    required
+                />
+
                 <label htmlFor="email">Email</label>
                 <input
                     id="email"
