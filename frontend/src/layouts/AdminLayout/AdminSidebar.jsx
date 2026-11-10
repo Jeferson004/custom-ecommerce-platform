@@ -19,25 +19,31 @@ function AdminSidebar({ isOpen, onNavigate }) {
       label: 'Transactions',
       path: '/admin/transactions',
     },
+    {
+      label: 'Orders',
+      path: '/admin/orders',
+    },
   ];
 
   return (
     <aside className={`${styles.sidebar} ${isOpen ? styles.sidebarOpen : ''}`}>
-      <div className={styles.sidebarHeader}>
-        <h2>Lorem</h2>
-      </div>
+      <div className={styles.container}>
+        <div className={styles.sidebarHeader}>
+          <h2>Lorem</h2>
+        </div>
 
-      <nav className={styles.navigation}>
-        {navigation.map((item) => (
-          <NavLink
-            key={item.path}
-            to={item.path}
-            onClick={onNavigate}
-            className={({ isActive }) => (isActive ? styles.activeLink : styles.navLink)}>
-            {item.label}
-          </NavLink>
-        ))}
-      </nav>
+        <nav className={styles.navigation}>
+          {navigation.map((item) => (
+            <NavLink
+              key={item.path}
+              to={item.path}
+              onClick={onNavigate}
+              className={({ isActive }) => (isActive ? styles.activeLink : styles.navLink)}>
+              {item.label}
+            </NavLink>
+          ))}
+        </nav>
+      </div>
     </aside>
   );
 }

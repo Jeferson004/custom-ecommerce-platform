@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
-import { getProductById } from '../../api/products';
-import { addCartItem } from '../../api/cart';
+import { getProductById } from '../../../api/products';
+import { addCartItem } from '../../../api/cart';
 import styles from './productDetails.module.scss';
 
 function ProductDetails() {

@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
-import { cancelOrder, getOrderById } from '../../api/orders';
+import { cancelOrder, getOrderById } from '../../../api/orders';
 import styles from './orderDetails.module.scss';
 
 const formatPrice = (amount) =>

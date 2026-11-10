@@ -81,20 +81,22 @@ function ProductPage() {
                 </p>
             </header>
 
-            {products.length === 0 ? (
-                <p className={styles.message}>
-                    No products found.
-                </p>
-            ) : (
-                <div className={styles.productGrid}>
-                    {products.map((product) => (
-                        <ProductCard
-                            key={product.id}
-                            product={product}
-                        />
-                    ))}
-                </div>
-            )}
+            <section>
+              {products.length === 0 ? (
+                  <p className={styles.message}>
+                      No products found.
+                  </p>
+              ) : (
+                  <div className={styles.productGrid}>
+                      {products.map((product) => (
+                          <ProductCard
+                              key={product.id}
+                              product={product}
+                          />
+                      ))}
+                  </div>
+              )}
+            </section>
         </main>
     );
 }

@@ -71,7 +71,7 @@ function AdminDashboard() {
   }
 
   return (
-    <main className={styles.container}>
+    <div className={styles.container}>
       <header className={styles.dashboardHeader}>
         <h1>Dashboard</h1>
         <p>Overview of your store's performance.</p>
@@ -187,7 +187,7 @@ function AdminDashboard() {
           )}
         </section>
       </div>
-    </main>
+    </div>
   );
 }
 

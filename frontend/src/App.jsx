@@ -1,19 +1,21 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import ProductPage from './pages/Product';
-import ProductDetails from './pages/ProductDetails';
+import ProductDetails from './pages/Product/ProductDetails';
 import Cart from './pages/Cart/';
 import Register from './pages/Register';
 import Login from './pages/Login';
 import Address from './pages/Address';
 import Checkout from './pages/Checkout';
 import Orders from './pages/Orders';
-import OrderDetails from './pages/OrderDetails';
+import OrderDetails from './pages/Orders/OrderDetails';
 import AdminRoute from './components/Auth/AdminRoute';
 import AdminProducts from './pages/Admin/Products';
 import AdminInventory from './pages/Admin/Inventory';
 import AdminTransactions from './pages/Admin/Transactions';
 import AdminDashboard from './pages/Admin/Dashboard';
 import AdminLayout from './layouts/AdminLayout';
+import AdminOrders from './pages/Admin/Orders';
+import AdminOrderDetails from './pages/Admin/Orders/OrderDetails';
 
 function App() {
   return (
@@ -39,6 +41,8 @@ function App() {
             <Route path="products" element={<AdminProducts />} />
             <Route path="inventory" element={<AdminInventory />} />
             <Route path="transactions" element={<AdminTransactions />} />
+            <Route path="orders" element={<AdminOrders />} />
+            <Route path="orders/:id" element={<AdminOrderDetails />} />
           </Route>
         </Route>
       </Routes>
