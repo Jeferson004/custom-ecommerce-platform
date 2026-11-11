@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
+import { Link } from 'react-router-dom';
 
 import { getAllOrders } from '../../../api/orders';
 import styles from './orders.module.scss';
@@ -28,7 +29,6 @@ function AdminOrders() {
         setError('');
 
         const response = await getAllOrders();
-
         const ordersData = response.data ?? response;
 
         if (!Array.isArray(ordersData)) {
@@ -149,6 +149,7 @@ function AdminOrders() {
                   <th>Total Amount</th>
                   <th>Status</th>
                   <th>Date Created</th>
+                  <th>Actions</th>
                 </tr>
               </thead>
 
@@ -167,6 +168,11 @@ function AdminOrders() {
                         </span>
                       </td>
                       <td>{formatDate(order.created_at)}</td>
+                      <td>
+                        <Link to={`/admin/orders/${orderId}`} className={styles.viewButton}>
+                          View Details
+                        </Link>
+                      </td>
                     </tr>
                   );
                 })}

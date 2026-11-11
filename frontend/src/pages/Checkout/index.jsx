@@ -39,7 +39,6 @@ function Checkout() {
         setAddresses(addressData);
 
         const defaultAddress = addressData.find((address) => address.is_default);
-
         const initialAddressId = String(defaultAddress?.id ?? addressData[0]?.id ?? '');
 
         setShippingAddressId(initialAddressId);
@@ -180,7 +179,7 @@ function Checkout() {
             {addresses.length === 0 ? (
               <p>
                 You need a saved address before placing an order.{' '}
-                <Link to="/addresses">Add an address</Link>
+                <Link to="/address">Add an address</Link>
               </p>
             ) : (
               <>
