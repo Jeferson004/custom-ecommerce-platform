@@ -1,24 +1,24 @@
 .container {
-  width: 100%;
-  min-width: 0;
-  // padding: 24px;
-  display: flex;
-  flex-direction: column;
-  gap: 24px;
+    width: 100%;
+    min-width: 0;
+    // padding: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
 }
 
 .ordersHeader {
-  h1 {
-    margin: 0;
-    font-size: 1.75rem;
-    font-weight: 700;
-  }
+    h1 {
+        margin: 0;
+        font-size: 1.75rem;
+        font-weight: 700;
+    }
 
-  p {
-    margin: 6px 0 0;
-    color: #6b7280;
-    font-size: 0.95rem;
-  }
+    p {
+        margin: 6px 0 0;
+        color: #6b7280;
+        font-size: 0.95rem;
+    }
 }
 
 // .ordersSection {
@@ -30,184 +30,184 @@
 // }
 
 .ordersToolbar {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 16px;
-  margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 20px;
 }
 
 .searchWrapper {
-  flex: 1;
-  min-width: 0;
+    flex: 1;
+    min-width: 0;
 
-  input {
-    width: 100%;
-    padding: 10px 12px;
-    border: 1px solid #d1d5db;
-    border-radius: 6px;
-    font-size: 0.9rem;
-    outline: none;
+    input {
+        width: 100%;
+        padding: 10px 12px;
+        border: 1px solid #d1d5db;
+        border-radius: 6px;
+        font-size: 0.9rem;
+        outline: none;
 
-    &:focus {
-      border-color: #6b7280;
+        &:focus {
+            border-color: #6b7280;
+        }
     }
-  }
 }
 
 .filterWrapper {
-  display: flex;
-  align-items: center;
-  gap: 10px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
 
-  label {
-    color: #6b7280;
-    font-size: 0.875rem;
-    white-space: nowrap;
-  }
+    label {
+        color: #6b7280;
+        font-size: 0.875rem;
+        white-space: nowrap;
+    }
 
-  select {
-    padding: 10px 12px;
-    border: 1px solid #d1d5db;
-    border-radius: 6px;
-    background: #fff;
-    font-size: 0.9rem;
-    cursor: pointer;
-  }
+    select {
+        padding: 10px 12px;
+        border: 1px solid #d1d5db;
+        border-radius: 6px;
+        background: #fff;
+        font-size: 0.9rem;
+        cursor: pointer;
+    }
 }
 
 .tableWrapper {
-  width: 100%;
-  overflow-x: auto;
+    width: 100%;
+    overflow-x: auto;
 }
 
 .dataTable {
-  width: 100%;
-  border-collapse: collapse;
-  white-space: nowrap;
+    width: 100%;
+    border-collapse: collapse;
+    white-space: nowrap;
 
-  th,
-  td {
-    padding: 12px;
-    text-align: left;
-    border-bottom: 1px solid #e5e7eb;
-    font-size: 0.875rem;
-  }
+    th,
+    td {
+        padding: 12px;
+        text-align: left;
+        border-bottom: 1px solid #e5e7eb;
+        font-size: 0.875rem;
+    }
 
-  th {
-    color: #6b7280;
-    font-weight: 600;
-    background: #f9fafb;
-  }
+    th {
+        color: #6b7280;
+        font-weight: 600;
+        background: #f9fafb;
+    }
 
-  tbody tr:last-child td {
-    border-bottom: none;
-  }
+    tbody tr:last-child td {
+        border-bottom: none;
+    }
 }
 
 .statusBadge {
-  display: inline-block;
-  padding: 5px 10px;
-  border-radius: 20px;
-  font-size: 0.75rem;
-  font-weight: 600;
-  text-transform: capitalize;
+    display: inline-block;
+    padding: 5px 10px;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: capitalize;
 }
 
 .statusPending {
-  color: #92400e;
-  background: #fef3c7;
+    color: #92400e;
+    background: #fef3c7;
 }
 
 .statusConfirmed {
-  color: #1d4ed8;
-  background: #dbeafe;
+    color: #1d4ed8;
+    background: #dbeafe;
 }
 
 .statusProcessing {
-  color: #6d28d9;
-  background: #ede9fe;
+    color: #6d28d9;
+    background: #ede9fe;
 }
 
 .statusShipped {
-  color: #0369a1;
-  background: #e0f2fe;
+    color: #0369a1;
+    background: #e0f2fe;
 }
 
 .statusDelivered {
-  color: #166534;
-  background: #dcfce7;
+    color: #166534;
+    background: #dcfce7;
 }
 
 .statusCancelled {
-  color: #991b1b;
-  background: #fee2e2;
+    color: #991b1b;
+    background: #fee2e2;
 }
 
 .resultsCount {
-  margin: 16px 0 0;
-  color: #6b7280;
-  font-size: 0.8rem;
-  text-align: right;
+    margin: 16px 0 0;
+    color: #6b7280;
+    font-size: 0.8rem;
+    text-align: right;
 }
 
 .emptyMessage,
 .stateMessage {
-  color: #6b7280;
-  font-size: 0.95rem;
+    color: #6b7280;
+    font-size: 0.95rem;
 }
 
 .errorMessage {
-  color: #dc2626;
-  font-size: 0.95rem;
+    color: #dc2626;
+    font-size: 0.95rem;
 }
 
 .viewButton {
-  display: inline-block;
-  padding: 7px 12px;
-  border: 1px solid #2563eb;
-  border-radius: 6px;
-  color: #2563eb;
-  font-size: 14px;
-  font-weight: 500;
-  text-decoration: none;
-  transition:
-    background-color 0.2s ease,
-    color 0.2s ease;
+    display: inline-block;
+    padding: 7px 12px;
+    border: 1px solid #2563eb;
+    border-radius: 6px;
+    color: #2563eb;
+    font-size: 14px;
+    font-weight: 500;
+    text-decoration: none;
+    transition:
+        background-color 0.2s ease,
+        color 0.2s ease;
 
-  &:hover {
-    background-color: #2563eb;
-    color: #fff;
-  }
+    &:hover {
+        background-color: #2563eb;
+        color: #fff;
+    }
 }
 
 @media (max-width: 768px) {
-  .ordersToolbar {
-    align-items: stretch;
-    flex-direction: column;
-  }
+    .ordersToolbar {
+        align-items: stretch;
+        flex-direction: column;
+    }
 
-  .filterWrapper {
-    justify-content: space-between;
-  }
+    .filterWrapper {
+        justify-content: space-between;
+    }
 }
 
 @media (max-width: 600px) {
-  .container {
-    padding: 16px;
-    gap: 20px;
-  }
-
-  .ordersSection {
-    padding: 14px;
-  }
-
-  .filterWrapper {
-    align-items: flex-start;
-    flex-direction: column;
-
-    select {
-      width: 100%;
+    .container {
+        padding: 16px;
+        gap: 20px;
     }
-  }
+
+    .ordersSection {
+        padding: 14px;
+    }
+
+    .filterWrapper {
+        align-items: flex-start;
+        flex-direction: column;
+
+        select {
+            width: 100%;
+        }
+    }
 }

@@ -1,4 +1,4 @@
-import { supabase } from "../configs/supabase";
+import { supabase } from '../configs/supabase';
 
 const API_URL = import.meta.env.VITE_API_URL;
 
@@ -10,7 +10,7 @@ export const apiRequest = async (path, options = {}) => {
     } = await supabase.auth.getSession();
 
     if (sessionError) {
-        throw new Error("Unable to retrieve the current session.");
+        throw new Error('Unable to retrieve the current session.');
     }
 
     const headers = {
@@ -18,8 +18,8 @@ export const apiRequest = async (path, options = {}) => {
     };
 
     // Set JSON content type when sending a body.
-    if (options.body !== undefined && !headers["Content-Type"]) {
-        headers["Content-Type"] = "application/json";
+    if (options.body !== undefined && !headers['Content-Type']) {
+        headers['Content-Type'] = 'application/json';
     }
 
     // Attach the access token when a user is signed in.
@@ -37,20 +37,15 @@ export const apiRequest = async (path, options = {}) => {
         return null;
     }
 
-    const contentType = response.headers.get("content-type");
-    const data = contentType?.includes("application/json")
+    const contentType = response.headers.get('content-type');
+    const data = contentType?.includes('application/json')
         ? await response.json()
         : await response.text();
 
     if (!response.ok) {
-        const message =
-            typeof data === "object" && data !== null
-                ? data.error || data.message
-                : data;
+        const message = typeof data === 'object' && data !== null ? data.error || data.message : data;
 
-        throw new Error(
-            message || `Request failed with status ${response.status}`
-        );
+        throw new Error(message || `Request failed with status ${response.status}`);
     }
 
     return data;

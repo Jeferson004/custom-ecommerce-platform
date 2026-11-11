@@ -2,8 +2,8 @@ import {
     getDashboardOverview,
     getRecentOrders,
     getLowStockProducts,
-    getSalesOverview
-} from "../models/dashboardModel.js";
+    getSalesOverview,
+} from '../models/dashboardModel.js';
 
 export const getDashboardOverviewController = async (req, res) => {
     try {
@@ -14,15 +14,14 @@ export const getDashboardOverviewController = async (req, res) => {
             data: overview,
         });
     } catch (error) {
-        console.error("Dashboard overview error:", error);
+        console.error('Dashboard overview error:', error);
 
         return res.status(500).json({
             success: false,
-            message: "Failed to retrieve dashboard overview.",
+            message: 'Failed to retrieve dashboard overview.',
         });
     }
 };
-
 
 export const getRecentOrdersController = async (req, res) => {
     try {
@@ -33,15 +32,14 @@ export const getRecentOrdersController = async (req, res) => {
             data: orders,
         });
     } catch (error) {
-        console.error("Recent orders error:", error);
+        console.error('Recent orders error:', error);
 
         return res.status(500).json({
             success: false,
-            message: "Failed to retrieve recent orders.",
+            message: 'Failed to retrieve recent orders.',
         });
     }
 };
-
 
 export const getLowStockProductsController = async (req, res) => {
     try {
@@ -52,15 +50,14 @@ export const getLowStockProductsController = async (req, res) => {
             data: products,
         });
     } catch (error) {
-        console.error("Low-stock products error:", error);
+        console.error('Low-stock products error:', error);
 
         return res.status(500).json({
             success: false,
-            message: "Failed to retrieve low-stock products.",
+            message: 'Failed to retrieve low-stock products.',
         });
     }
 };
-
 
 export const getSalesOverviewController = async (req, res) => {
     try {
@@ -71,11 +68,11 @@ export const getSalesOverviewController = async (req, res) => {
             data: sales,
         });
     } catch (error) {
-        console.error("Sales overview error:", error);
+        console.error('Sales overview error:', error);
 
         return res.status(500).json({
             success: false,
-            message: "Failed to retrieve sales overview.",
+            message: 'Failed to retrieve sales overview.',
         });
     }
 };

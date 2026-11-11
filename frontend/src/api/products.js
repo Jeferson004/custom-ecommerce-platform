@@ -1,7 +1,7 @@
-import { apiRequest } from "./client";
+import { apiRequest } from './client';
 
 export const getProducts = () => {
-    return apiRequest("/api/products");
+    return apiRequest('/api/products');
 };
 
 export const getProductById = (id) => {
@@ -9,21 +9,21 @@ export const getProductById = (id) => {
 };
 
 export const createProduct = (productData) => {
-    return apiRequest("/api/products", {
-        method: "POST",
+    return apiRequest('/api/products', {
+        method: 'POST',
         body: JSON.stringify(productData),
     });
 };
 
 export const updateProduct = (id, productData) => {
     return apiRequest(`/api/products/${id}`, {
-        method: "PUT",
+        method: 'PUT',
         body: JSON.stringify(productData),
     });
 };
 
 export const deleteProduct = (id) => {
     return apiRequest(`/api/products/${id}`, {
-        method: "DELETE",
+        method: 'DELETE',
     });
 };

@@ -5,135 +5,138 @@ import { addCartItem } from '../../../api/cart';
 import styles from './productDetails.module.scss';
 
 function ProductDetails() {
-  const { id } = useParams();
+    const { id } = useParams();
 
-  const [product, setProduct] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState('');
+    const [product, setProduct] = useState(null);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState('');
 
-  const [addingToCart, setAddingToCart] = useState(false);
-  const [cartMessage, setCartMessage] = useState('');
-  const [cartError, setCartError] = useState('');
+    const [addingToCart, setAddingToCart] = useState(false);
+    const [cartMessage, setCartMessage] = useState('');
+    const [cartError, setCartError] = useState('');
 
-  const handleAddToCart = async () => {
-    setAddingToCart(true);
-    setCartMessage('');
-    setCartError('');
+    const handleAddToCart = async () => {
+        setAddingToCart(true);
+        setCartMessage('');
+        setCartError('');
 
-    try {
-      await addCartItem(product.id, 1);
-      setCartMessage('Product added to cart.');
-    } catch (error) {
-      setCartError(error.message || 'Unable to add product to cart.');
-    } finally {
-      setAddingToCart(false);
+        try {
+            await addCartItem(product.id, 1);
+            setCartMessage('Product added to cart.');
+        } catch (error) {
+            setCartError(error.message || 'Unable to add product to cart.');
+        } finally {
+            setAddingToCart(false);
+        }
+    };
+
+    useEffect(() => {
+        let ignore = false;
+
+        const loadProduct = async () => {
+            setLoading(true);
+            setError('');
+            setProduct(null);
+
+            try {
+                const data = await getProductById(id);
+
+                if (!ignore) {
+                    setProduct(data);
+                }
+            } catch (error) {
+                if (!ignore) {
+                    setError(error.message);
+                }
+            } finally {
+                if (!ignore) {
+                    setLoading(false);
+                }
+            }
+        };
+
+        loadProduct();
+
+        return () => {
+            ignore = true;
+        };
+    }, [id]);
+
+    if (loading) {
+        return (
+            <p className={styles.message} role="status">
+                Loading product...
+            </p>
+        );
     }
-  };
 
-  useEffect(() => {
-    let ignore = false;
+    if (error) {
+        const isNotFound =
+            error.toLowerCase().includes('not found') || error.toLowerCase().includes('404');
 
-    const loadProduct = async () => {
-      setLoading(true);
-      setError('');
-      setProduct(null);
+        return (
+            <main className={styles.productDetails}>
+                <h1>{isNotFound ? 'Product not found' : 'Unable to load product'}</h1>
 
-      try {
-        const data = await getProductById(id);
+                <p className={styles.error} role="alert">
+                    {isNotFound ? 'This product does not exist or may have been removed.' : error}
+                </p>
 
-        if (!ignore) {
-          setProduct(data);
-        }
-      } catch (error) {
-        if (!ignore) {
-          setError(error.message);
-        }
-      } finally {
-        if (!ignore) {
-          setLoading(false);
-        }
-      }
-    };
+                <Link to="/">Back to products</Link>
+            </main>
+        );
+    }
 
-    loadProduct();
+    if (!product || !product.is_active) {
+        return (
+            <main className={styles.productDetails}>
+                <h1>Product unavailable</h1>
+                <p>This product is unavailable or does not exist.</p>
+                <Link to="/">Back to products</Link>
+            </main>
+        );
+    }
 
-    return () => {
-      ignore = true;
-    };
-  }, [id]);
-
-  if (loading) {
-    return (
-      <p className={styles.message} role="status">
-        Loading product...
-      </p>
-    );
-  }
-
-  if (error) {
-    const isNotFound = error.toLowerCase().includes('not found') || error.toLowerCase().includes('404');
+    const price = Number(product.price);
 
     return (
-      <main className={styles.productDetails}>
-        <h1>{isNotFound ? 'Product not found' : 'Unable to load product'}</h1>
+        <main className={styles.productDetails}>
+            <Link to="/" className={styles.backLink}>
+                ← Back to products
+            </Link>
 
-        <p className={styles.error} role="alert">
-          {isNotFound ? 'This product does not exist or may have been removed.' : error}
-        </p>
+            <section className={styles.productLayout}>
+                <div className={styles.imagePlaceholder}>No image available</div>
 
-        <Link to="/">Back to products</Link>
-      </main>
+                <div className={styles.productInfo}>
+                    <p className={styles.category}>{product.category_name || 'Uncategorized'}</p>
+
+                    <h1>{product.name}</h1>
+
+                    <p className={styles.price}>
+                        {Number.isFinite(price)
+                            ? `₱${price.toLocaleString('en-PH', {
+                                  minimumFractionDigits: 2,
+                                  maximumFractionDigits: 2,
+                              })}`
+                            : 'Price unavailable'}
+                    </p>
+
+                    <p className={styles.description}>
+                        {product.description || 'No description available.'}
+                    </p>
+
+                    <button type="button" onClick={handleAddToCart} disabled={addingToCart}>
+                        {addingToCart ? 'Adding...' : 'Add to Cart'}
+                    </button>
+
+                    {cartMessage && <p role="status">{cartMessage}</p>}
+
+                    {cartError && <p role="alert">{cartError}</p>}
+                </div>
+            </section>
+        </main>
     );
-  }
-
-  if (!product || !product.is_active) {
-    return (
-      <main className={styles.productDetails}>
-        <h1>Product unavailable</h1>
-        <p>This product is unavailable or does not exist.</p>
-        <Link to="/">Back to products</Link>
-      </main>
-    );
-  }
-
-  const price = Number(product.price);
-
-  return (
-    <main className={styles.productDetails}>
-      <Link to="/" className={styles.backLink}>
-        ← Back to products
-      </Link>
-
-      <section className={styles.productLayout}>
-        <div className={styles.imagePlaceholder}>No image available</div>
-
-        <div className={styles.productInfo}>
-          <p className={styles.category}>{product.category_name || 'Uncategorized'}</p>
-
-          <h1>{product.name}</h1>
-
-          <p className={styles.price}>
-            {Number.isFinite(price)
-              ? `₱${price.toLocaleString('en-PH', {
-                  minimumFractionDigits: 2,
-                  maximumFractionDigits: 2,
-                })}`
-              : 'Price unavailable'}
-          </p>
-
-          <p className={styles.description}>{product.description || 'No description available.'}</p>
-
-          <button type="button" onClick={handleAddToCart} disabled={addingToCart}>
-            {addingToCart ? 'Adding...' : 'Add to Cart'}
-          </button>
-
-          {cartMessage && <p role="status">{cartMessage}</p>}
-
-          {cartError && <p role="alert">{cartError}</p>}
-        </div>
-      </section>
-    </main>
-  );
 }
 
 export default ProductDetails;

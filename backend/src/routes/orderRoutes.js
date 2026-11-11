@@ -1,4 +1,4 @@
-import express from "express";
+import express from 'express';
 import {
     createOrder,
     getOrders,
@@ -9,9 +9,9 @@ import {
     updateAdminOrderStatus,
     cancelAdminOrder,
     getOrderStatusHistory,
-} from "../controllers/orderController.js";
-import { authenticateUser } from "../middlewares/authMiddleware.js";
-import { authorizeRoles } from "../middlewares/authorizeRoles.js";
+} from '../controllers/orderController.js';
+import { authenticateUser } from '../middlewares/authMiddleware.js';
+import { authorizeRoles } from '../middlewares/authorizeRoles.js';
 
 const router = express.Router();
 
@@ -21,19 +21,19 @@ router.use(authenticateUser);
 // =====================================================
 // ADMIN ROUTES
 // =====================================================
-router.use("/admin", authorizeRoles("staff", "admin"));
-router.get("/admin", getAllOrders);
-router.get("/admin/:id/history", getOrderStatusHistory);
-router.get("/admin/:id", getAdminOrderById);
-router.patch("/admin/:id/status", updateAdminOrderStatus);
-router.patch("/admin/:id/cancel", cancelAdminOrder);
+router.use('/admin', authorizeRoles('staff', 'admin'));
+router.get('/admin', getAllOrders);
+router.get('/admin/:id/history', getOrderStatusHistory);
+router.get('/admin/:id', getAdminOrderById);
+router.patch('/admin/:id/status', updateAdminOrderStatus);
+router.patch('/admin/:id/cancel', cancelAdminOrder);
 
 // =====================================================
 // CUSTOMER ROUTES
 // =====================================================
-router.get("/", getOrders);
-router.post("/", createOrder);
-router.get("/:id", getOrderById);
-router.patch("/:id/cancel", cancelOrder);
+router.get('/', getOrders);
+router.post('/', createOrder);
+router.get('/:id', getOrderById);
+router.patch('/:id/cancel', cancelOrder);
 
 export default router;

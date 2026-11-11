@@ -1,21 +1,21 @@
-import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { supabase } from "../../configs/supabase";
-import styles from "./login.module.scss";
+import { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { supabase } from '../../configs/supabase';
+import styles from './login.module.scss';
 
 function Login() {
     const navigate = useNavigate();
 
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
     const [loading, setLoading] = useState(false);
-    const [error, setError] = useState("");
+    const [error, setError] = useState('');
 
     const handleSubmit = async (event) => {
         event.preventDefault();
 
         setLoading(true);
-        setError("");
+        setError('');
 
         try {
             const { error } = await supabase.auth.signInWithPassword({
@@ -27,9 +27,9 @@ function Login() {
                 throw error;
             }
 
-            navigate("/");
+            navigate('/');
         } catch (error) {
-            setError(error.message || "Unable to log in.");
+            setError(error.message || 'Unable to log in.');
         } finally {
             setLoading(false);
         }
@@ -62,15 +62,18 @@ function Login() {
                 />
 
                 <button type="submit" disabled={loading}>
-                    {loading ? "Logging in..." : "Log in"}
+                    {loading ? 'Logging in...' : 'Log in'}
                 </button>
             </form>
 
-            {error && <p className={styles.error} role="alert">{error}</p>}
+            {error && (
+                <p className={styles.error} role="alert">
+                    {error}
+                </p>
+            )}
 
             <p>
-                Don't have an account?{" "}
-                <Link to="/register">Register</Link>
+                Don't have an account? <Link to="/register">Register</Link>
             </p>
         </main>
     );

@@ -1,4 +1,4 @@
-import pool from "../configs/db.js";
+import pool from '../configs/db.js';
 
 // GET /api/inventory
 export const findAllInventory = async () => {
@@ -11,7 +11,7 @@ export const findAllInventory = async () => {
             i.updated_at
          FROM inventory i
          JOIN products p ON i.product_id = p.id
-         ORDER BY i.id ASC`
+         ORDER BY i.id ASC`,
     );
 
     return result.rows;
@@ -29,7 +29,7 @@ export const findInventoryByProductId = async (productId) => {
          FROM inventory i
          JOIN products p ON i.product_id = p.id
          WHERE i.product_id = $1`,
-        [productId]
+        [productId],
     );
 
     return result.rows[0] || null;
@@ -41,7 +41,7 @@ export const findProductById = async (productId) => {
         `SELECT id
          FROM products
          WHERE id = $1`,
-        [productId]
+        [productId],
     );
 
     return result.rows[0] || null;
@@ -53,29 +53,25 @@ export const findInventoryRecordByProductId = async (productId) => {
         `SELECT id
          FROM inventory
          WHERE product_id = $1`,
-        [productId]
+        [productId],
     );
 
     return result.rows[0] || null;
 };
 
 // POST /api/inventory
-export const createInventory = async (
-    productId,
-    quantity,
-    adjustedBy
-) => {
+export const createInventory = async (productId, quantity, adjustedBy) => {
     const client = await pool.connect();
 
     try {
-        await client.query("BEGIN");
+        await client.query('BEGIN');
 
         // Create the inventory record.
         const inventoryResult = await client.query(
             `INSERT INTO inventory (product_id, quantity)
              VALUES ($1, $2)
              RETURNING *`,
-            [productId, quantity]
+            [productId, quantity],
         );
 
         const inventory = inventoryResult.rows[0];
@@ -92,22 +88,15 @@ export const createInventory = async (
                     adjusted_by
                 )
                 VALUES ($1, $2, $3, $4, $5, $6)`,
-                [
-                    productId,
-                    0,
-                    quantity,
-                    quantity,
-                    "restock",
-                    adjustedBy,
-                ]
+                [productId, 0, quantity, quantity, 'restock', adjustedBy],
             );
         }
 
-        await client.query("COMMIT");
+        await client.query('COMMIT');
 
         return inventory;
     } catch (error) {
-        await client.query("ROLLBACK");
+        await client.query('ROLLBACK');
         throw error;
     } finally {
         client.release();
@@ -115,15 +104,11 @@ export const createInventory = async (
 };
 
 // PUT /api/inventory/:productId
-export const updateInventory = async (
-    productId,
-    quantity,
-    adjustedBy
-) => {
+export const updateInventory = async (productId, quantity, adjustedBy) => {
     const client = await pool.connect();
 
     try {
-        await client.query("BEGIN");
+        await client.query('BEGIN');
 
         // Retrieve and lock the current inventory record.
         const inventoryResult = await client.query(
@@ -131,16 +116,15 @@ export const updateInventory = async (
              FROM inventory
              WHERE product_id = $1
              FOR UPDATE`,
-            [productId]
+            [productId],
         );
 
         if (inventoryResult.rows.length === 0) {
-            await client.query("ROLLBACK");
+            await client.query('ROLLBACK');
             return null;
         }
 
         const currentInventory = inventoryResult.rows[0];
-
         const quantityBefore = currentInventory.quantity;
         const quantityChange = quantity - quantityBefore;
         const quantityAfter = quantity;
@@ -154,14 +138,13 @@ export const updateInventory = async (
                     updated_at = NOW()
                  WHERE product_id = $2
                  RETURNING *`,
-                [quantityAfter, productId]
+                [quantityAfter, productId],
             );
 
             const inventory = updateResult.rows[0];
 
             // Determine the transaction reason.
-            const reason =
-                quantityChange > 0 ? "restock" : "adjustment";
+            const reason = quantityChange > 0 ? 'restock' : 'adjustment';
 
             // Record the inventory transaction.
             await client.query(
@@ -174,28 +157,20 @@ export const updateInventory = async (
                     adjusted_by
                 )
                 VALUES ($1, $2, $3, $4, $5, $6)`,
-                [
-                    productId,
-                    quantityBefore,
-                    quantityChange,
-                    quantityAfter,
-                    reason,
-                    adjustedBy,
-                ]
+                [productId, quantityBefore, quantityChange, quantityAfter, reason, adjustedBy],
             );
 
-            await client.query("COMMIT");
+            await client.query('COMMIT');
 
             return inventory;
         }
 
         // No quantity change: return the existing inventory.
-        await client.query("COMMIT");
+        await client.query('COMMIT');
 
         return currentInventory;
-
     } catch (error) {
-        await client.query("ROLLBACK");
+        await client.query('ROLLBACK');
         throw error;
     } finally {
         client.release();
@@ -218,7 +193,7 @@ export const findAllInventoryTransactions = async () => {
             t.created_at
          FROM inventory_transactions t
          JOIN products p ON t.product_id = p.id
-         ORDER BY t.created_at DESC, t.id DESC`
+         ORDER BY t.created_at DESC, t.id DESC`,
     );
 
     return result.rows;

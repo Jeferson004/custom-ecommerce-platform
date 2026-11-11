@@ -1,13 +1,12 @@
-
-import { useEffect, useState } from "react";
-import { getProducts } from "../../api/products";
-import ProductCard from "../../components/ProductCard";
-import styles from "./product.module.scss";
+import { useEffect, useState } from 'react';
+import { getProducts } from '../../api/products';
+import ProductCard from '../../components/ProductCard';
+import styles from './product.module.scss';
 
 function ProductPage() {
     const [products, setProducts] = useState([]);
     const [loading, setLoading] = useState(true);
-    const [error, setError] = useState("");
+    const [error, setError] = useState('');
 
     useEffect(() => {
         let ignore = false;
@@ -17,9 +16,7 @@ function ProductPage() {
                 const data = await getProducts();
 
                 if (!Array.isArray(data)) {
-                    throw new Error(
-                        "The products API did not return an array."
-                    );
+                    throw new Error('The products API did not return an array.');
                 }
 
                 if (!ignore) {
@@ -64,8 +61,7 @@ function ProductPage() {
                 <button
                     type="button"
                     className={styles.retryButton}
-                    onClick={() => window.location.reload()}
-                >
+                    onClick={() => window.location.reload()}>
                     Try again
                 </button>
             </main>
@@ -76,26 +72,19 @@ function ProductPage() {
         <main className={styles.productPage}>
             <header className={styles.header}>
                 <h1 className={styles.title}>Our Products</h1>
-                <p className={styles.subtitle}>
-                    Browse our available products.
-                </p>
+                <p className={styles.subtitle}>Browse our available products.</p>
             </header>
 
             <section>
-              {products.length === 0 ? (
-                  <p className={styles.message}>
-                      No products found.
-                  </p>
-              ) : (
-                  <div className={styles.productGrid}>
-                      {products.map((product) => (
-                          <ProductCard
-                              key={product.id}
-                              product={product}
-                          />
-                      ))}
-                  </div>
-              )}
+                {products.length === 0 ? (
+                    <p className={styles.message}>No products found.</p>
+                ) : (
+                    <div className={styles.productGrid}>
+                        {products.map((product) => (
+                            <ProductCard key={product.id} product={product} />
+                        ))}
+                    </div>
+                )}
             </section>
         </main>
     );

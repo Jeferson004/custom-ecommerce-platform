@@ -1,12 +1,11 @@
-
-import pool from "../configs/db.js";
+import pool from '../configs/db.js';
 
 // GET /api/categories
 export const findAllCategories = async () => {
     const result = await pool.query(
         `SELECT *
          FROM categories
-         ORDER BY id ASC`
+         ORDER BY id ASC`,
     );
 
     return result.rows;
@@ -18,7 +17,7 @@ export const findCategoryById = async (id) => {
         `SELECT *
          FROM categories
          WHERE id = $1`,
-        [id]
+        [id],
     );
 
     return result.rows[0] || null;
@@ -30,7 +29,7 @@ export const createCategory = async (name, description) => {
         `INSERT INTO categories (name, description)
          VALUES ($1, $2)
          RETURNING *`,
-        [name, description || null]
+        [name, description || null],
     );
 
     return result.rows[0];
@@ -46,7 +45,7 @@ export const updateCategory = async (id, name, description) => {
             updated_at = NOW()
          WHERE id = $3
          RETURNING *`,
-        [name, description || null, id]
+        [name, description || null, id],
     );
 
     return result.rows[0] || null;
@@ -58,7 +57,7 @@ export const deleteCategory = async (id) => {
         `DELETE FROM categories
          WHERE id = $1
          RETURNING *`,
-        [id]
+        [id],
     );
 
     return result.rows[0] || null;

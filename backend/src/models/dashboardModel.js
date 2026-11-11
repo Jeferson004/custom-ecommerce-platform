@@ -1,4 +1,4 @@
-import pool from "../configs/db.js";
+import pool from '../configs/db.js';
 
 export const getDashboardOverview = async () => {
     const result = await pool.query(`
@@ -46,7 +46,6 @@ export const getDashboardOverview = async () => {
     return result.rows[0];
 };
 
-
 export const getRecentOrders = async () => {
     const result = await pool.query(`
         SELECT
@@ -64,7 +63,6 @@ export const getRecentOrders = async () => {
 
     return result.rows;
 };
-
 
 export const getLowStockProducts = async () => {
     const result = await pool.query(`
@@ -88,7 +86,6 @@ export const getLowStockProducts = async () => {
 
     return result.rows;
 };
-
 
 export const getSalesOverview = async () => {
     const result = await pool.query(`
@@ -119,4 +116,3 @@ export const getSalesOverview = async () => {
 
     return result.rows;
 };
-

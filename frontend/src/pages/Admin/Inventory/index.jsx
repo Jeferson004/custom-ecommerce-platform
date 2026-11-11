@@ -8,213 +8,218 @@ import styles from './inventory.module.scss';
 const LOW_STOCK_THRESHOLD = 5;
 
 function AdminInventory() {
-  const [inventory, setInventory] = useState([]);
-  const [products, setProducts] = useState([]);
-  const [showForm, setShowForm] = useState(false);
-  const [updatingProductId, setUpdatingProductId] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState('');
-  const [selectedItem, setSelectedItem] = useState(null);
+    const [inventory, setInventory] = useState([]);
+    const [products, setProducts] = useState([]);
+    const [showForm, setShowForm] = useState(false);
+    const [updatingProductId, setUpdatingProductId] = useState(null);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState('');
+    const [selectedItem, setSelectedItem] = useState(null);
 
-  // Fetch inventory, products, and transaction history.
-  const fetchData = async () => {
-    try {
-      setLoading(true);
-      setError('');
+    // Fetch inventory, products, and transaction history.
+    const fetchData = async () => {
+        try {
+            setLoading(true);
+            setError('');
 
-      const [inventoryData, productsData] = await Promise.all([getInventory(), getProducts()]);
+            const [inventoryData, productsData] = await Promise.all([getInventory(), getProducts()]);
 
-      setInventory(inventoryData);
-      setProducts(productsData);
-    } catch (error) {
-      console.error('Fetch inventory data error:', error);
-      setError(error.message || 'Failed to fetch inventory data.');
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  // Initial data loading.
-  useEffect(() => {
-    let ignore = false;
-
-    const loadInitialData = async () => {
-      try {
-        const [inventoryData, productsData] = await Promise.all([getInventory(), getProducts()]);
-
-        if (ignore) return;
-
-        setInventory(inventoryData);
-        setProducts(productsData);
-      } catch (error) {
-        if (ignore) return;
-
-        console.error('Fetch inventory data error:', error);
-        setError(error.message || 'Failed to fetch inventory data.');
-      } finally {
-        if (!ignore) {
-          setLoading(false);
+            setInventory(inventoryData);
+            setProducts(productsData);
+        } catch (error) {
+            console.error('Fetch inventory data error:', error);
+            setError(error.message || 'Failed to fetch inventory data.');
+        } finally {
+            setLoading(false);
         }
-      }
     };
 
-    loadInitialData();
+    // Initial data loading.
+    useEffect(() => {
+        let ignore = false;
 
-    return () => {
-      ignore = true;
+        const loadInitialData = async () => {
+            try {
+                const [inventoryData, productsData] = await Promise.all([
+                    getInventory(),
+                    getProducts(),
+                ]);
+
+                if (ignore) return;
+
+                setInventory(inventoryData);
+                setProducts(productsData);
+            } catch (error) {
+                if (ignore) return;
+
+                console.error('Fetch inventory data error:', error);
+                setError(error.message || 'Failed to fetch inventory data.');
+            } finally {
+                if (!ignore) {
+                    setLoading(false);
+                }
+            }
+        };
+
+        loadInitialData();
+
+        return () => {
+            ignore = true;
+        };
+    }, []);
+
+    // Create an inventory record.
+    const handleCreateInventory = async (inventoryData) => {
+        await createInventory(inventoryData.product_id, inventoryData.quantity);
+
+        await fetchData();
+
+        setShowForm(false);
     };
-  }, []);
 
-  // Create an inventory record.
-  const handleCreateInventory = async (inventoryData) => {
-    await createInventory(inventoryData.product_id, inventoryData.quantity);
+    // Update an existing inventory quantity.
+    const handleUpdateQuantity = async (item, quantity) => {
+        try {
+            setError('');
+            setUpdatingProductId(item.product_id);
 
-    await fetchData();
+            await updateInventory(item.product_id, quantity);
 
-    setShowForm(false);
-  };
+            await fetchData();
 
-  // Update an existing inventory quantity.
-  const handleUpdateQuantity = async (item, quantity) => {
-    try {
-      setError('');
-      setUpdatingProductId(item.product_id);
-
-      await updateInventory(item.product_id, quantity);
-
-      await fetchData();
-
-      setSelectedItem(null);
-    } catch (error) {
-      setError(error.message || 'Unable to update inventory.');
-      throw error;
-    } finally {
-      setUpdatingProductId(null);
-    }
-  };
-
-  const handleOpenUpdateForm = (item) => {
-    setSelectedItem(item);
-  };
-
-  if (loading) {
-    return <p role="status">Loading inventory...</p>;
-  }
-
-  const getStockStatus = (quantity) => {
-    const stock = Number(quantity);
-
-    if (stock === 0) {
-      return {
-        label: 'Out of Stock',
-        className: styles.outOfStock,
-      };
-    }
-
-    if (stock <= LOW_STOCK_THRESHOLD) {
-      return {
-        label: 'Low Stock',
-        className: styles.lowStock,
-      };
-    }
-
-    return {
-      label: 'In Stock',
-      className: styles.inStock,
-    };
-  };
-
-  return (
-    <div className={styles.container}>
-      <div className={styles.header}>
-        <div>
-          <h1>Inventory Management</h1>
-          <p>Monitor and manage your product stock.</p>
-        </div>
-
-        <button
-          type="button"
-          onClick={() => {
-            setShowForm((previous) => !previous);
             setSelectedItem(null);
-          }}>
-          {showForm ? 'Close Form' : 'Add Inventory'}
-        </button>
-      </div>
+        } catch (error) {
+            setError(error.message || 'Unable to update inventory.');
+            throw error;
+        } finally {
+            setUpdatingProductId(null);
+        }
+    };
 
-      {error && <p role="alert">{error}</p>}
+    const handleOpenUpdateForm = (item) => {
+        setSelectedItem(item);
+    };
 
-      {showForm && (
-        <InventoryForm
-          products={products}
-          inventory={inventory}
-          onSubmit={handleCreateInventory}
-          onCancel={() => setShowForm(false)}
-        />
-      )}
+    if (loading) {
+        return <p role="status">Loading inventory...</p>;
+    }
 
-      {selectedItem && (
-        <StockUpdateForm
-          key={selectedItem.product_id}
-          item={selectedItem}
-          onSubmit={handleUpdateQuantity}
-          onCancel={() => setSelectedItem(null)}
-        />
-      )}
+    const getStockStatus = (quantity) => {
+        const stock = Number(quantity);
 
-      <section className={styles.inventoryList}>
-        <h2>Inventory ({inventory.length})</h2>
+        if (stock === 0) {
+            return {
+                label: 'Out of Stock',
+                className: styles.outOfStock,
+            };
+        }
 
-        {inventory.length === 0 ? (
-          <p>No inventory records found.</p>
-        ) : (
-          <table className={styles.table}>
-            <thead>
-              <tr>
-                <th>ID</th>
-                <th>Product</th>
-                <th>Available Stock</th>
-                <th>Status</th>
-                <th>Last Updated</th>
-                <th>Actions</th>
-              </tr>
-            </thead>
+        if (stock <= LOW_STOCK_THRESHOLD) {
+            return {
+                label: 'Low Stock',
+                className: styles.lowStock,
+            };
+        }
 
-            <tbody>
-              {inventory.map((item) => {
-                const stockStatus = getStockStatus(item.quantity);
+        return {
+            label: 'In Stock',
+            className: styles.inStock,
+        };
+    };
 
-                return (
-                  <tr key={item.id}>
-                    <td>{item.product_id}</td>
+    return (
+        <div className={styles.container}>
+            <div className={styles.header}>
+                <div>
+                    <h1>Inventory Management</h1>
+                    <p>Monitor and manage your product stock.</p>
+                </div>
 
-                    <td>{item.product_name}</td>
+                <button
+                    type="button"
+                    onClick={() => {
+                        setShowForm((previous) => !previous);
+                        setSelectedItem(null);
+                    }}>
+                    {showForm ? 'Close Form' : 'Add Inventory'}
+                </button>
+            </div>
 
-                    <td>{item.quantity}</td>
+            {error && <p role="alert">{error}</p>}
 
-                    <td>
-                      <span className={stockStatus.className}>{stockStatus.label}</span>
-                    </td>
+            {showForm && (
+                <InventoryForm
+                    products={products}
+                    inventory={inventory}
+                    onSubmit={handleCreateInventory}
+                    onCancel={() => setShowForm(false)}
+                />
+            )}
 
-                    <td>{new Date(item.updated_at).toLocaleString()}</td>
+            {selectedItem && (
+                <StockUpdateForm
+                    key={selectedItem.product_id}
+                    item={selectedItem}
+                    onSubmit={handleUpdateQuantity}
+                    onCancel={() => setSelectedItem(null)}
+                />
+            )}
 
-                    <td>
-                      <button
-                        type="button"
-                        disabled={updatingProductId === item.product_id}
-                        onClick={() => handleOpenUpdateForm(item)}>
-                        Update Stock
-                      </button>
-                    </td>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
-        )}
-      </section>
-    </div>
-  );
+            <section className={styles.inventoryList}>
+                <h2>Inventory ({inventory.length})</h2>
+
+                {inventory.length === 0 ? (
+                    <p>No inventory records found.</p>
+                ) : (
+                    <table className={styles.table}>
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Product</th>
+                                <th>Available Stock</th>
+                                <th>Status</th>
+                                <th>Last Updated</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            {inventory.map((item) => {
+                                const stockStatus = getStockStatus(item.quantity);
+
+                                return (
+                                    <tr key={item.id}>
+                                        <td>{item.product_id}</td>
+
+                                        <td>{item.product_name}</td>
+
+                                        <td>{item.quantity}</td>
+
+                                        <td>
+                                            <span className={stockStatus.className}>
+                                                {stockStatus.label}
+                                            </span>
+                                        </td>
+
+                                        <td>{new Date(item.updated_at).toLocaleString()}</td>
+
+                                        <td>
+                                            <button
+                                                type="button"
+                                                disabled={updatingProductId === item.product_id}
+                                                onClick={() => handleOpenUpdateForm(item)}>
+                                                Update Stock
+                                            </button>
+                                        </td>
+                                    </tr>
+                                );
+                            })}
+                        </tbody>
+                    </table>
+                )}
+            </section>
+        </div>
+    );
 }
 
 export default AdminInventory;

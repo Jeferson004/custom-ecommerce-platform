@@ -1,40 +1,39 @@
-
-import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { supabase } from "../../configs/supabase";
-import styles from "./register.module.scss";
+import { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { supabase } from '../../configs/supabase';
+import styles from './register.module.scss';
 
 function Register() {
     const navigate = useNavigate();
 
-    const [name, setName] = useState("");
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
-    const [confirmPassword, setConfirmPassword] = useState("");
+    const [name, setName] = useState('');
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [confirmPassword, setConfirmPassword] = useState('');
     const [loading, setLoading] = useState(false);
-    const [error, setError] = useState("");
-    const [message, setMessage] = useState("");
+    const [error, setError] = useState('');
+    const [message, setMessage] = useState('');
 
     const handleSubmit = async (event) => {
         event.preventDefault();
 
-        setError("");
-        setMessage("");
+        setError('');
+        setMessage('');
 
         const trimmedName = name.trim();
 
         if (!trimmedName) {
-            setError("Name is required.");
+            setError('Name is required.');
             return;
         }
 
         if (password !== confirmPassword) {
-            setError("Passwords do not match.");
+            setError('Passwords do not match.');
             return;
         }
 
         if (password.length < 6) {
-            setError("Password must contain at least 6 characters.");
+            setError('Password must contain at least 6 characters.');
             return;
         }
 
@@ -56,14 +55,14 @@ function Register() {
             }
 
             if (data.session) {
-                navigate("/");
+                navigate('/');
             } else {
                 setMessage(
-                    "Registration successful. Check your email to confirm your account before logging in."
+                    'Registration successful. Check your email to confirm your account before logging in.',
                 );
             }
         } catch (error) {
-            setError(error.message || "Registration failed.");
+            setError(error.message || 'Registration failed.');
         } finally {
             setLoading(false);
         }
@@ -107,23 +106,19 @@ function Register() {
                     required
                 />
 
-                <label htmlFor="confirmPassword">
-                    Confirm password
-                </label>
+                <label htmlFor="confirmPassword">Confirm password</label>
                 <input
                     id="confirmPassword"
                     type="password"
                     autoComplete="new-password"
                     value={confirmPassword}
-                    onChange={(event) =>
-                        setConfirmPassword(event.target.value)
-                    }
+                    onChange={(event) => setConfirmPassword(event.target.value)}
                     minLength={6}
                     required
                 />
 
                 <button type="submit" disabled={loading}>
-                    {loading ? "Creating account..." : "Register"}
+                    {loading ? 'Creating account...' : 'Register'}
                 </button>
             </form>
 
@@ -131,8 +126,7 @@ function Register() {
             {message && <p role="status">{message}</p>}
 
             <p>
-                Already have an account?{" "}
-                <Link to="/login">Log in</Link>
+                Already have an account? <Link to="/login">Log in</Link>
             </p>
         </main>
     );

@@ -1,5 +1,4 @@
-
-import pool from "../configs/db.js";
+import pool from '../configs/db.js';
 
 // GET /api/addresses
 export const findAddressesByProfileId = async (profileId) => {
@@ -8,7 +7,7 @@ export const findAddressesByProfileId = async (profileId) => {
          FROM addresses
          WHERE profile_id = $1
          ORDER BY is_default DESC, created_at DESC`,
-        [profileId]
+        [profileId],
     );
 
     return result.rows;
@@ -20,7 +19,7 @@ export const findAddressById = async (id, profileId) => {
         `SELECT *
          FROM addresses
          WHERE id = $1 AND profile_id = $2`,
-        [id, profileId]
+        [id, profileId],
     );
 
     return result.rows[0] || null;
@@ -44,14 +43,14 @@ export const createAddress = async (profileId, addressData) => {
     const client = await pool.connect();
 
     try {
-        await client.query("BEGIN");
+        await client.query('BEGIN');
 
         if (is_default) {
             await client.query(
                 `UPDATE addresses
                  SET is_default = false, updated_at = NOW()
                  WHERE profile_id = $1`,
-                [profileId]
+                [profileId],
             );
         }
 
@@ -83,14 +82,14 @@ export const createAddress = async (profileId, addressData) => {
                 country,
                 delivery_instructions || null,
                 is_default,
-            ]
+            ],
         );
 
-        await client.query("COMMIT");
+        await client.query('COMMIT');
 
         return result.rows[0];
     } catch (error) {
-        await client.query("ROLLBACK");
+        await client.query('ROLLBACK');
         throw error;
     } finally {
         client.release();
@@ -115,7 +114,7 @@ export const updateAddress = async (id, profileId, addressData) => {
     const client = await pool.connect();
 
     try {
-        await client.query("BEGIN");
+        await client.query('BEGIN');
 
         // Verify ownership and lock the address during the transaction.
         const existing = await client.query(
@@ -123,11 +122,11 @@ export const updateAddress = async (id, profileId, addressData) => {
              FROM addresses
              WHERE id = $1 AND profile_id = $2
              FOR UPDATE`,
-            [id, profileId]
+            [id, profileId],
         );
 
         if (existing.rows.length === 0) {
-            await client.query("ROLLBACK");
+            await client.query('ROLLBACK');
             return null;
         }
 
@@ -136,7 +135,7 @@ export const updateAddress = async (id, profileId, addressData) => {
                 `UPDATE addresses
                  SET is_default = false, updated_at = NOW()
                  WHERE profile_id = $1`,
-                [profileId]
+                [profileId],
             );
         }
 
@@ -172,14 +171,14 @@ export const updateAddress = async (id, profileId, addressData) => {
                 is_default ?? null,
                 id,
                 profileId,
-            ]
+            ],
         );
 
-        await client.query("COMMIT");
+        await client.query('COMMIT');
 
         return result.rows[0] || null;
     } catch (error) {
-        await client.query("ROLLBACK");
+        await client.query('ROLLBACK');
         throw error;
     } finally {
         client.release();
@@ -192,7 +191,7 @@ export const deleteAddress = async (id, profileId) => {
         `DELETE FROM addresses
          WHERE id = $1 AND profile_id = $2
          RETURNING id`,
-        [id, profileId]
+        [id, profileId],
     );
 
     return result.rows[0] || null;

@@ -1,4 +1,3 @@
-
 .productCard {
     display: flex;
     flex-direction: column;
@@ -88,7 +87,7 @@
         outline-offset: 3px;
     }
 
-    &[aria-disabled="true"] {
+    &[aria-disabled='true'] {
         background: #ddd;
         color: #777;
         cursor: not-allowed;

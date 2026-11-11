@@ -5,38 +5,30 @@ import {
     createProduct as createProductModel,
     updateProduct as updateProductModel,
     deleteProduct as deleteProductModel,
-} from "../models/productModel.js";
+} from '../models/productModel.js';
 
 // Shared validation for create and update.
 const validateProductData = (body) => {
-    const {
-        category_id,
-        name,
-        price,
-    } = body;
+    const { category_id, name, price } = body;
 
-    if (
-        category_id === undefined ||
-        category_id === null ||
-        category_id === ""
-    ) {
-        return "Category is required.";
+    if (category_id === undefined || category_id === null || category_id === '') {
+        return 'Category is required.';
     }
 
-    if (typeof name !== "string" || name.trim() === "") {
-        return "Product name is required.";
+    if (typeof name !== 'string' || name.trim() === '') {
+        return 'Product name is required.';
     }
 
-    if (price === undefined || price === null || price === "") {
-        return "Product price is required.";
+    if (price === undefined || price === null || price === '') {
+        return 'Product price is required.';
     }
 
     if (!Number.isFinite(Number(price))) {
-        return "Product price must be a valid number.";
+        return 'Product price must be a valid number.';
     }
 
     if (Number(price) < 0) {
-        return "Product price cannot be negative.";
+        return 'Product price cannot be negative.';
     }
 
     return null;
@@ -49,10 +41,10 @@ export const getProducts = async (req, res) => {
 
         return res.status(200).json(products);
     } catch (error) {
-        console.error("Get products error:", error);
+        console.error('Get products error:', error);
 
         return res.status(500).json({
-            message: "Failed to retrieve products.",
+            message: 'Failed to retrieve products.',
         });
     }
 };
@@ -66,16 +58,16 @@ export const getProductById = async (req, res) => {
 
         if (!product) {
             return res.status(404).json({
-                message: "Product not found.",
+                message: 'Product not found.',
             });
         }
 
         return res.status(200).json(product);
     } catch (error) {
-        console.error("Get product error:", error);
+        console.error('Get product error:', error);
 
         return res.status(500).json({
-            message: "Failed to retrieve product.",
+            message: 'Failed to retrieve product.',
         });
     }
 };
@@ -91,20 +83,13 @@ export const createProduct = async (req, res) => {
     }
 
     try {
-        const {
-            category_id,
-            name,
-            description,
-            price,
-            sku,
-            is_active,
-        } = req.body;
+        const { category_id, name, description, price, sku, is_active } = req.body;
 
         const category = await findCategoryById(category_id);
 
         if (!category) {
             return res.status(400).json({
-                message: "Category does not exist.",
+                message: 'Category does not exist.',
             });
         }
 
@@ -119,22 +104,22 @@ export const createProduct = async (req, res) => {
 
         return res.status(201).json(product);
     } catch (error) {
-        console.error("Create product error:", error);
+        console.error('Create product error:', error);
 
-        if (error.code === "23505") {
+        if (error.code === '23505') {
             return res.status(409).json({
-                message: "SKU already exists.",
+                message: 'SKU already exists.',
             });
         }
 
-        if (error.code === "23503") {
+        if (error.code === '23503') {
             return res.status(400).json({
-                message: "Category does not exist.",
+                message: 'Category does not exist.',
             });
         }
 
         return res.status(500).json({
-            message: "Failed to create product.",
+            message: 'Failed to create product.',
         });
     }
 };
@@ -151,20 +136,13 @@ export const updateProduct = async (req, res) => {
     }
 
     try {
-        const {
-            category_id,
-            name,
-            description,
-            price,
-            sku,
-            is_active,
-        } = req.body;
+        const { category_id, name, description, price, sku, is_active } = req.body;
 
         const category = await findCategoryById(category_id);
 
         if (!category) {
             return res.status(400).json({
-                message: "Category does not exist.",
+                message: 'Category does not exist.',
             });
         }
 
@@ -179,28 +157,28 @@ export const updateProduct = async (req, res) => {
 
         if (!product) {
             return res.status(404).json({
-                message: "Product not found.",
+                message: 'Product not found.',
             });
         }
 
         return res.status(200).json(product);
     } catch (error) {
-        console.error("Update product error:", error);
+        console.error('Update product error:', error);
 
-        if (error.code === "23505") {
+        if (error.code === '23505') {
             return res.status(409).json({
-                message: "SKU already exists.",
+                message: 'SKU already exists.',
             });
         }
 
-        if (error.code === "23503") {
+        if (error.code === '23503') {
             return res.status(400).json({
-                message: "Category does not exist.",
+                message: 'Category does not exist.',
             });
         }
 
         return res.status(500).json({
-            message: "Failed to update product.",
+            message: 'Failed to update product.',
         });
     }
 };
@@ -214,25 +192,24 @@ export const deleteProduct = async (req, res) => {
 
         if (!product) {
             return res.status(404).json({
-                message: "Product not found.",
+                message: 'Product not found.',
             });
         }
 
         return res.status(200).json({
-            message: "Product deleted successfully.",
+            message: 'Product deleted successfully.',
         });
     } catch (error) {
-        console.error("Delete product error:", error);
+        console.error('Delete product error:', error);
 
-        if (error.code === "23503") {
+        if (error.code === '23503') {
             return res.status(409).json({
-                message:
-                    "Product cannot be deleted because it is being used by another record.",
+                message: 'Product cannot be deleted because it is being used by another record.',
             });
         }
 
         return res.status(500).json({
-            message: "Failed to delete product.",
+            message: 'Failed to delete product.',
         });
     }
 };

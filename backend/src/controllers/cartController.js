@@ -4,21 +4,20 @@ import {
     updateCartItemQuantity,
     removeItemFromCart,
     clearCartByProfileId,
-} from "../models/cartModel.js";
+} from '../models/cartModel.js';
 
 // GET /api/cart
 export const getCart = async (req, res) => {
     try {
         const profileId = req.user.id;
-
         const cartData = await getCartByProfileId(profileId);
 
         return res.status(200).json(cartData);
     } catch (error) {
-        console.error("Get cart error:", error);
+        console.error('Get cart error:', error);
 
         return res.status(500).json({
-            message: "Failed to retrieve cart.",
+            message: 'Failed to retrieve cart.',
         });
     }
 };
@@ -29,25 +28,20 @@ export const addCartItem = async (req, res) => {
 
     if (!Number.isInteger(quantity) || quantity < 1) {
         return res.status(400).json({
-            message: "Quantity must be a positive integer.",
+            message: 'Quantity must be a positive integer.',
         });
     }
 
     try {
         const profileId = req.user.id;
-
-        const item = await addItemToCart(
-            profileId,
-            product_id,
-            quantity
-        );
+        const item = await addItemToCart(profileId, product_id, quantity);
 
         return res.status(201).json({
-            message: "Product added to cart successfully.",
+            message: 'Product added to cart successfully.',
             item,
         });
     } catch (error) {
-        console.error("Add cart item error:", error);
+        console.error('Add cart item error:', error);
 
         if (error.statusCode) {
             return res.status(error.statusCode).json({
@@ -56,7 +50,7 @@ export const addCartItem = async (req, res) => {
         }
 
         return res.status(500).json({
-            message: "Failed to add product to cart.",
+            message: 'Failed to add product to cart.',
         });
     }
 };
@@ -68,35 +62,29 @@ export const updateCartItem = async (req, res) => {
 
     if (!Number.isInteger(quantity) || quantity < 1) {
         return res.status(400).json({
-            message: "Quantity must be a positive integer.",
+            message: 'Quantity must be a positive integer.',
         });
     }
 
     try {
         const profileId = req.user.id;
-
-        const item = await updateCartItemQuantity(
-            profileId,
-            productId,
-            quantity
-        );
+        const item = await updateCartItemQuantity(profileId, productId, quantity);
 
         if (!item) {
             return res.status(404).json({
-                message:
-                    "Cart item not found, product inactive, or insufficient stock.",
+                message: 'Cart item not found, product inactive, or insufficient stock.',
             });
         }
 
         return res.status(200).json({
-            message: "Cart item quantity updated successfully.",
+            message: 'Cart item quantity updated successfully.',
             item,
         });
     } catch (error) {
-        console.error("Update cart item error:", error);
+        console.error('Update cart item error:', error);
 
         return res.status(500).json({
-            message: "Failed to update cart item.",
+            message: 'Failed to update cart item.',
         });
     }
 };
@@ -106,26 +94,22 @@ export const removeCartItem = async (req, res) => {
     try {
         const { productId } = req.params;
         const profileId = req.user.id;
-
-        const deletedItem = await removeItemFromCart(
-            profileId,
-            productId
-        );
+        const deletedItem = await removeItemFromCart(profileId, productId);
 
         if (!deletedItem) {
             return res.status(404).json({
-                message: "Cart item not found.",
+                message: 'Cart item not found.',
             });
         }
 
         return res.status(200).json({
-            message: "Product removed from cart successfully.",
+            message: 'Product removed from cart successfully.',
         });
     } catch (error) {
-        console.error("Remove cart item error:", error);
+        console.error('Remove cart item error:', error);
 
         return res.status(500).json({
-            message: "Failed to remove cart item.",
+            message: 'Failed to remove cart item.',
         });
     }
 };
@@ -138,13 +122,13 @@ export const clearCart = async (req, res) => {
         await clearCartByProfileId(profileId);
 
         return res.status(200).json({
-            message: "Cart cleared successfully.",
+            message: 'Cart cleared successfully.',
         });
     } catch (error) {
-        console.error("Clear cart error:", error);
+        console.error('Clear cart error:', error);
 
         return res.status(500).json({
-            message: "Failed to clear cart.",
+            message: 'Failed to clear cart.',
         });
     }
 };

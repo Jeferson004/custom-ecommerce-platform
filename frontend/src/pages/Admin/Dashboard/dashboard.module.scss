@@ -1,165 +1,164 @@
-
 .container {
-  width: 100%;
-  min-width: 0;
-  padding: 24px;
-  display: flex;
-  flex-direction: column;
-  gap: 24px;
+    width: 100%;
+    min-width: 0;
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
 }
 
 .dashboardHeader {
-  h1 {
-    margin: 0;
-    font-size: 1.75rem;
-    font-weight: 700;
-  }
+    h1 {
+        margin: 0;
+        font-size: 1.75rem;
+        font-weight: 700;
+    }
 
-  p {
-    margin: 6px 0 0;
-    color: #6b7280;
-    font-size: 0.95rem;
-  }
+    p {
+        margin: 6px 0 0;
+        color: #6b7280;
+        font-size: 0.95rem;
+    }
 }
 
 .dashboardOverview {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
 
-  h2 {
-    margin: 0;
-    font-size: 1.2rem;
-    font-weight: 600;
-  }
+    h2 {
+        margin: 0;
+        font-size: 1.2rem;
+        font-weight: 600;
+    }
 }
 
 .overviewGrid {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 16px;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 16px;
 }
 
 .overviewCard {
-  min-width: 0;
-  padding: 20px;
-  background: #fff;
-  border: 1px solid #e5e7eb;
-  border-radius: 10px;
+    min-width: 0;
+    padding: 20px;
+    background: #fff;
+    border: 1px solid #e5e7eb;
+    border-radius: 10px;
 
-  h3 {
-    margin: 0 0 12px;
-    color: #6b7280;
-    font-size: 0.9rem;
-    font-weight: 500;
-  }
+    h3 {
+        margin: 0 0 12px;
+        color: #6b7280;
+        font-size: 0.9rem;
+        font-weight: 500;
+    }
 
-  p {
-    margin: 0;
-    font-size: 1.5rem;
-    font-weight: 700;
-    overflow-wrap: anywhere;
-  }
+    p {
+        margin: 0;
+        font-size: 1.5rem;
+        font-weight: 700;
+        overflow-wrap: anywhere;
+    }
 }
 
 .dashboardSales {
-  min-width: 0;
-  padding: 20px;
-  background: #fff;
-  border: 1px solid #e5e7eb;
-  border-radius: 10px;
+    min-width: 0;
+    padding: 20px;
+    background: #fff;
+    border: 1px solid #e5e7eb;
+    border-radius: 10px;
 }
 
 .dashboardBottomGrid {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 20px;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 20px;
 }
 
 .dashboardSection {
-  min-width: 0;
-  padding: 20px;
-  background: #fff;
-  border: 1px solid #e5e7eb;
-  border-radius: 10px;
+    min-width: 0;
+    padding: 20px;
+    background: #fff;
+    border: 1px solid #e5e7eb;
+    border-radius: 10px;
 
-  h2 {
-    margin: 0 0 16px;
-    font-size: 1.1rem;
-    font-weight: 600;
-  }
+    h2 {
+        margin: 0 0 16px;
+        font-size: 1.1rem;
+        font-weight: 600;
+    }
 }
 
 .tableWrapper {
-  width: 100%;
-  overflow-x: auto;
+    width: 100%;
+    overflow-x: auto;
 }
 
 .dataTable {
-  width: 100%;
-  border-collapse: collapse;
-  white-space: nowrap;
+    width: 100%;
+    border-collapse: collapse;
+    white-space: nowrap;
 
-  th,
-  td {
-    padding: 12px;
-    text-align: left;
-    border-bottom: 1px solid #e5e7eb;
-    font-size: 0.875rem;
-  }
+    th,
+    td {
+        padding: 12px;
+        text-align: left;
+        border-bottom: 1px solid #e5e7eb;
+        font-size: 0.875rem;
+    }
 
-  th {
-    color: #6b7280;
-    font-weight: 600;
-    background: #f9fafb;
-  }
+    th {
+        color: #6b7280;
+        font-weight: 600;
+        background: #f9fafb;
+    }
 
-  tbody tr:last-child td {
-    border-bottom: none;
-  }
+    tbody tr:last-child td {
+        border-bottom: none;
+    }
 }
 
 .emptyMessage,
 .stateMessage {
-  color: #6b7280;
-  font-size: 0.95rem;
+    color: #6b7280;
+    font-size: 0.95rem;
 }
 
 .errorMessage {
-  color: #dc2626;
-  font-size: 0.95rem;
+    color: #dc2626;
+    font-size: 0.95rem;
 }
 
 @media (max-width: 1024px) {
-  .overviewGrid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
+    .overviewGrid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
 
-  .dashboardBottomGrid {
-    grid-template-columns: 1fr;
-  }
+    .dashboardBottomGrid {
+        grid-template-columns: 1fr;
+    }
 }
 
 @media (max-width: 600px) {
-  .container {
-    padding: 16px;
-    gap: 20px;
-  }
+    .container {
+        padding: 16px;
+        gap: 20px;
+    }
 
-  .overviewGrid {
-    grid-template-columns: 1fr;
-    gap: 12px;
-  }
+    .overviewGrid {
+        grid-template-columns: 1fr;
+        gap: 12px;
+    }
 
-  .overviewCard {
-    padding: 16px;
-  }
+    .overviewCard {
+        padding: 16px;
+    }
 
-  .dashboardSales {
-    padding: 14px;
-  }
+    .dashboardSales {
+        padding: 14px;
+    }
 
-  .dashboardSection {
-    padding: 14px;
-  }
+    .dashboardSection {
+        padding: 14px;
+    }
 }

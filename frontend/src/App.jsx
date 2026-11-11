@@ -18,36 +18,36 @@ import AdminOrders from './pages/Admin/Orders';
 import AdminOrderDetails from './pages/Admin/Orders/OrderDetails';
 
 function App() {
-  return (
-    <BrowserRouter>
-      <Routes>
-        {/* TODO: improve this component to restricting access to authenticated users only */}
-        <Route path="/register" element={<Register />} />
-        <Route path="/login" element={<Login />} />
+    return (
+        <BrowserRouter>
+            <Routes>
+                {/* TODO: improve this component to restricting access to authenticated users only */}
+                <Route path="/register" element={<Register />} />
+                <Route path="/login" element={<Login />} />
 
-        <Route path="/" element={<ProductPage />} />
-        <Route path="/cart" element={<Cart />} />
-        <Route path="/products/:id" element={<ProductDetails />} />
-        <Route path="/address" element={<Address />} />
-        <Route path="/checkout" element={<Checkout />} />
-        <Route path="/orders" element={<Orders />} />
-        <Route path="/orders/:id" element={<OrderDetails />} />
+                <Route path="/" element={<ProductPage />} />
+                <Route path="/cart" element={<Cart />} />
+                <Route path="/products/:id" element={<ProductDetails />} />
+                <Route path="/address" element={<Address />} />
+                <Route path="/checkout" element={<Checkout />} />
+                <Route path="/orders" element={<Orders />} />
+                <Route path="/orders/:id" element={<OrderDetails />} />
 
-        <Route element={<AdminRoute />}>
-          <Route path="/admin" element={<AdminLayout />}>
-            <Route index element={<AdminDashboard />} />
+                <Route element={<AdminRoute />}>
+                    <Route path="/admin" element={<AdminLayout />}>
+                        <Route index element={<AdminDashboard />} />
 
-            <Route path="dashboard" element={<AdminDashboard />} />
-            <Route path="products" element={<AdminProducts />} />
-            <Route path="inventory" element={<AdminInventory />} />
-            <Route path="transactions" element={<AdminTransactions />} />
-            <Route path="orders" element={<AdminOrders />} />
-            <Route path="orders/:id" element={<AdminOrderDetails />} />
-          </Route>
-        </Route>
-      </Routes>
-    </BrowserRouter>
-  );
+                        <Route path="dashboard" element={<AdminDashboard />} />
+                        <Route path="products" element={<AdminProducts />} />
+                        <Route path="inventory" element={<AdminInventory />} />
+                        <Route path="transactions" element={<AdminTransactions />} />
+                        <Route path="orders" element={<AdminOrders />} />
+                        <Route path="orders/:id" element={<AdminOrderDetails />} />
+                    </Route>
+                </Route>
+            </Routes>
+        </BrowserRouter>
+    );
 }
 
 export default App;

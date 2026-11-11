@@ -1,22 +1,21 @@
-import pool from "../configs/db.js";
+import pool from '../configs/db.js';
 
 export const authorizeRoles = (...allowedRoles) => {
     return async (req, res, next) => {
         try {
             if (!req.user?.id) {
                 return res.status(401).json({
-                    error: "Authentication required."
+                    error: 'Authentication required.',
                 });
             }
 
-            const result = await pool.query(
-                "SELECT role FROM profiles WHERE id = $1 LIMIT 1",
-                [req.user.id]
-            );
+            const result = await pool.query('SELECT role FROM profiles WHERE id = $1 LIMIT 1', [
+                req.user.id,
+            ]);
 
             if (result.rows.length === 0) {
                 return res.status(403).json({
-                    error: "User profile not found."
+                    error: 'User profile not found.',
                 });
             }
 
@@ -24,17 +23,17 @@ export const authorizeRoles = (...allowedRoles) => {
 
             if (!allowedRoles.includes(userRole)) {
                 return res.status(403).json({
-                    error: "You do not have permission to perform this action."
+                    error: 'You do not have permission to perform this action.',
                 });
             }
 
             req.userRole = userRole;
             return next();
         } catch (error) {
-            console.error("Authorization middleware error:", error);
+            console.error('Authorization middleware error:', error);
 
             return res.status(500).json({
-                error: "Unable to verify user permissions."
+                error: 'Unable to verify user permissions.',
             });
         }
     };

@@ -1,4 +1,4 @@
-import pool from "../configs/db.js";
+import pool from '../configs/db.js';
 
 // GET /api/products
 export const findAllProducts = async () => {
@@ -16,7 +16,7 @@ export const findAllProducts = async () => {
             c.name AS category_name
          FROM products p
          LEFT JOIN categories c ON p.category_id = c.id
-         ORDER BY p.id ASC`
+         ORDER BY p.id ASC`,
     );
 
     return result.rows;
@@ -39,7 +39,7 @@ export const findProductById = async (id) => {
          FROM products p
          LEFT JOIN categories c ON p.category_id = c.id
          WHERE p.id = $1`,
-        [id]
+        [id],
     );
 
     return result.rows[0] || null;
@@ -51,7 +51,7 @@ export const findCategoryById = async (categoryId) => {
         `SELECT id
          FROM categories
          WHERE id = $1`,
-        [categoryId]
+        [categoryId],
     );
 
     return result.rows[0] || null;
@@ -59,14 +59,7 @@ export const findCategoryById = async (categoryId) => {
 
 // POST /api/products
 export const createProduct = async (productData) => {
-    const {
-        category_id,
-        name,
-        description,
-        price,
-        sku,
-        is_active,
-    } = productData;
+    const { category_id, name, description, price, sku, is_active } = productData;
 
     const result = await pool.query(
         `INSERT INTO products (
@@ -79,14 +72,7 @@ export const createProduct = async (productData) => {
          )
          VALUES ($1, $2, $3, $4, $5, $6)
          RETURNING *`,
-        [
-            category_id,
-            name,
-            description,
-            price,
-            sku,
-            is_active,
-        ]
+        [category_id, name, description, price, sku, is_active],
     );
 
     return result.rows[0];
@@ -94,14 +80,7 @@ export const createProduct = async (productData) => {
 
 // PUT /api/products/:id
 export const updateProduct = async (id, productData) => {
-    const {
-        category_id,
-        name,
-        description,
-        price,
-        sku,
-        is_active,
-    } = productData;
+    const { category_id, name, description, price, sku, is_active } = productData;
 
     const result = await pool.query(
         `UPDATE products
@@ -115,15 +94,7 @@ export const updateProduct = async (id, productData) => {
             updated_at = NOW()
          WHERE id = $7
          RETURNING *`,
-        [
-            category_id,
-            name,
-            description,
-            price,
-            sku,
-            is_active,
-            id,
-        ]
+        [category_id, name, description, price, sku, is_active, id],
     );
 
     return result.rows[0] || null;
@@ -135,7 +106,7 @@ export const deleteProduct = async (id) => {
         `DELETE FROM products
          WHERE id = $1
          RETURNING *`,
-        [id]
+        [id],
     );
 
     return result.rows[0] || null;

@@ -1,15 +1,11 @@
-import pool from "../configs/db.js";
+import pool from '../configs/db.js';
 
 // POST /api/payments
-export const createPayment = async (
-    profileId,
-    orderId,
-    paymentMethod
-) => {
+export const createPayment = async (profileId, orderId, paymentMethod) => {
     const client = await pool.connect();
 
     try {
-        await client.query("BEGIN");
+        await client.query('BEGIN');
 
         // Verify that the order belongs to the authenticated user.
         const orderResult = await client.query(
@@ -17,21 +13,19 @@ export const createPayment = async (
              FROM orders
              WHERE id = $1 AND profile_id = $2
              FOR UPDATE`,
-            [orderId, profileId]
+            [orderId, profileId],
         );
 
         if (orderResult.rows.length === 0) {
-            const error = new Error("Order not found.");
+            const error = new Error('Order not found.');
             error.statusCode = 404;
             throw error;
         }
 
         const order = orderResult.rows[0];
 
-        if (order.status !== "pending") {
-            const error = new Error(
-                "Only pending orders can receive a payment record."
-            );
+        if (order.status !== 'pending') {
+            const error = new Error('Only pending orders can receive a payment record.');
             error.statusCode = 400;
             throw error;
         }
@@ -41,13 +35,11 @@ export const createPayment = async (
             `SELECT id
              FROM payments
              WHERE order_id = $1`,
-            [order.id]
+            [order.id],
         );
 
         if (existingPayment.rows.length > 0) {
-            const error = new Error(
-                "A payment record already exists for this order."
-            );
+            const error = new Error('A payment record already exists for this order.');
             error.statusCode = 409;
             throw error;
         }
@@ -64,14 +56,14 @@ export const createPayment = async (
              )
              VALUES ($1, $2, 'pending', $3, NOW(), NOW())
              RETURNING *`,
-            [order.id, order.total_amount, paymentMethod]
+            [order.id, order.total_amount, paymentMethod],
         );
 
-        await client.query("COMMIT");
+        await client.query('COMMIT');
 
         return paymentResult.rows[0];
     } catch (error) {
-        await client.query("ROLLBACK");
+        await client.query('ROLLBACK');
         throw error;
     } finally {
         client.release();
@@ -86,7 +78,7 @@ export const findPaymentsByProfileId = async (profileId) => {
          JOIN orders o ON o.id = p.order_id
          WHERE o.profile_id = $1
          ORDER BY p.created_at DESC`,
-        [profileId]
+        [profileId],
     );
 
     return result.rows;
@@ -100,7 +92,7 @@ export const findPaymentById = async (id, profileId) => {
          JOIN orders o ON o.id = p.order_id
          WHERE p.id = $1
            AND o.profile_id = $2`,
-        [id, profileId]
+        [id, profileId],
     );
 
     return result.rows[0] || null;
@@ -108,11 +100,7 @@ export const findPaymentById = async (id, profileId) => {
 
 // PATCH /api/payments/:id
 // Change the payment method only while payment is pending.
-export const updatePaymentMethod = async (
-    id,
-    profileId,
-    paymentMethod
-) => {
+export const updatePaymentMethod = async (id, profileId, paymentMethod) => {
     const result = await pool.query(
         `UPDATE payments p
          SET payment_method = $1,
@@ -123,7 +111,7 @@ export const updatePaymentMethod = async (
            AND o.profile_id = $3
            AND p.status = 'pending'
          RETURNING p.*`,
-        [paymentMethod, id, profileId]
+        [paymentMethod, id, profileId],
     );
 
     return result.rows[0] || null;
