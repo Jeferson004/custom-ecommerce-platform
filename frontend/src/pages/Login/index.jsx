@@ -18,16 +18,32 @@ function Login() {
         setError('');
 
         try {
-            const { error } = await supabase.auth.signInWithPassword({
+            const { data, error: authError } = await supabase.auth.signInWithPassword({
                 email,
                 password,
             });
 
-            if (error) {
-                throw error;
+            if (authError) {
+                throw authError;
             }
 
-            navigate('/');
+            const { data: profile, error: profileError } = await supabase
+                .from('profiles')
+                .select('role')
+                .eq('id', data.user.id)
+                .single();
+
+            if (profileError || !profile) {
+                throw new Error('Unable to retrieve your account information.');
+            }
+
+            if (profile.role === 'admin' || profile.role === 'staff') {
+                navigate('/admin', { replace: true });
+            } else if (profile.role === 'customer') {
+                navigate('/customer', { replace: true });
+            } else {
+                throw new Error('Your account has an invalid role.');
+            }
         } catch (error) {
             setError(error.message || 'Unable to log in.');
         } finally {

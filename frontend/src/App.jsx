@@ -16,37 +16,45 @@ import AdminDashboard from './pages/Admin/Dashboard';
 import AdminLayout from './layouts/AdminLayout';
 import AdminOrders from './pages/Admin/Orders';
 import AdminOrderDetails from './pages/Admin/Orders/OrderDetails';
+import { AuthProvider } from './contexts/Auths/AuthProvider';
+import CustomerLayout from './layouts/CustomerLayout';
+import CustomerRoute from './components/Auth/CustomerRoute';
 
 function App() {
     return (
-        <BrowserRouter>
-            <Routes>
-                {/* TODO: improve this component to restricting access to authenticated users only */}
-                <Route path="/register" element={<Register />} />
-                <Route path="/login" element={<Login />} />
+        <AuthProvider>
+            <BrowserRouter>
+                <Routes>
+                    {/* TODO: improve this component to restricting access to authenticated users only */}
+                    <Route path="/register" element={<Register />} />
+                    <Route path="/login" element={<Login />} />
 
-                <Route path="/" element={<ProductPage />} />
-                <Route path="/cart" element={<Cart />} />
-                <Route path="/products/:id" element={<ProductDetails />} />
-                <Route path="/address" element={<Address />} />
-                <Route path="/checkout" element={<Checkout />} />
-                <Route path="/orders" element={<Orders />} />
-                <Route path="/orders/:id" element={<OrderDetails />} />
-
-                <Route element={<AdminRoute />}>
-                    <Route path="/admin" element={<AdminLayout />}>
-                        <Route index element={<AdminDashboard />} />
-
-                        <Route path="dashboard" element={<AdminDashboard />} />
-                        <Route path="products" element={<AdminProducts />} />
-                        <Route path="inventory" element={<AdminInventory />} />
-                        <Route path="transactions" element={<AdminTransactions />} />
-                        <Route path="orders" element={<AdminOrders />} />
-                        <Route path="orders/:id" element={<AdminOrderDetails />} />
+                    <Route element={<CustomerRoute />}>
+                        <Route path="/customer" element={<CustomerLayout />}>
+                            <Route index element={<ProductPage />} />
+                            <Route path="cart" element={<Cart />} />
+                            <Route path="products/:id" element={<ProductDetails />} />
+                            <Route path="address" element={<Address />} />
+                            <Route path="checkout" element={<Checkout />} />
+                            <Route path="orders" element={<Orders />} />
+                            <Route path="orders/:id" element={<OrderDetails />} />
+                        </Route>
                     </Route>
-                </Route>
-            </Routes>
-        </BrowserRouter>
+
+                    <Route element={<AdminRoute />}>
+                        <Route path="/admin" element={<AdminLayout />}>
+                            <Route index element={<AdminDashboard />} />
+                            <Route path="dashboard" element={<AdminDashboard />} />
+                            <Route path="products" element={<AdminProducts />} />
+                            <Route path="inventory" element={<AdminInventory />} />
+                            <Route path="transactions" element={<AdminTransactions />} />
+                            <Route path="orders" element={<AdminOrders />} />
+                            <Route path="orders/:id" element={<AdminOrderDetails />} />
+                        </Route>
+                    </Route>
+                </Routes>
+            </BrowserRouter>
+        </AuthProvider>
     );
 }
 
