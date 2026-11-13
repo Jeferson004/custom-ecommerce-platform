@@ -141,7 +141,7 @@ function Checkout() {
                         Status: <strong>{placedOrder.status}</strong>
                     </p>
 
-                    <Link to="/cart" className={styles.secondaryLink}>
+                    <Link to="/customer/cart" className={styles.secondaryLink}>
                         Return to cart
                     </Link>
                 </section>
@@ -154,7 +154,7 @@ function Checkout() {
             <main className={styles.checkout}>
                 <h1>Checkout</h1>
                 <p>Your cart is empty.</p>
-                <Link to="/cart" className={styles.secondaryLink}>
+                <Link to="/customer/cart" className={styles.secondaryLink}>
                     Return to cart
                 </Link>
             </main>
@@ -179,7 +179,7 @@ function Checkout() {
                         {addresses.length === 0 ? (
                             <p>
                                 You need a saved address before placing an order.{' '}
-                                <Link to="/address">Add an address</Link>
+                                <Link to="/customer/address">Add an address</Link>
                             </p>
                         ) : (
                             <>

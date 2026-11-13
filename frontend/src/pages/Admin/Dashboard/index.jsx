@@ -7,7 +7,7 @@ import {
     getSalesOverview,
 } from '../../../api/dashboard';
 
-import SalesChart from '../../../components/Admin/SalesChart';
+import SalesChart from '../../../components/SalesChart';
 import styles from './dashboard.module.scss';
 
 function AdminDashboard() {

@@ -156,7 +156,7 @@ function Cart() {
                 <section className={styles.emptyCart}>
                     <h2>Your cart is empty</h2>
                     <p>Add some products before checking out.</p>
-                    <Link to="/">Browse products</Link>
+                    <Link to="/customer">Browse products</Link>
                 </section>
             ) : (
                 <>
@@ -233,7 +233,7 @@ function Cart() {
                             {clearing ? 'Clearing...' : 'Clear Cart'}
                         </button>
 
-                        <Link to="/checkout" className={styles.checkoutButton}>
+                        <Link to="/customer/checkout" className={styles.checkoutButton}>
                             Proceed to Checkout
                         </Link>
                     </section>

@@ -1,4 +1,4 @@
-import styles from './adminLayout.module.scss';
+import styles from './adminHeader.module.scss';
 
 function AdminHeader({ onMenuClick }) {
     return (

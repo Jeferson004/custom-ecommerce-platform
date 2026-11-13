@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Outlet } from 'react-router-dom';
-import AdminSidebar from './AdminSidebar';
-import AdminHeader from './AdminHeader';
+import AdminSidebar from '../../components/Sidebar/AdminSidebar';
+import AdminHeader from '../../components/Headers/AdminHeader';
 import styles from './adminLayout.module.scss';
 
 function AdminLayout() {
@@ -16,7 +16,7 @@ function AdminLayout() {
     };
 
     return (
-        <div className={styles.adminLayout}>
+        <div className={styles.container}>
             <AdminSidebar isOpen={isSidebarOpen} onNavigate={closeSidebar} />
 
             {isSidebarOpen && (
@@ -28,10 +28,10 @@ function AdminLayout() {
                 />
             )}
 
-            <div className={styles.mainContent}>
+            <div className={styles.content}>
                 <AdminHeader onMenuClick={toggleSidebar} />
 
-                <main className={styles.pageContent}>
+                <main className={styles.main}>
                     <Outlet />
                 </main>
             </div>

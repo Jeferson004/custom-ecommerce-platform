@@ -1,7 +1,6 @@
 .container {
     width: 100%;
     min-width: 0;
-    // padding: 24px;
     display: flex;
     flex-direction: column;
     gap: 24px;
@@ -20,14 +19,6 @@
         font-size: 0.95rem;
     }
 }
-
-// .ordersSection {
-//   min-width: 0;
-//   padding: 20px;
-//   background: #fff;
-//   border: 1px solid #e5e7eb;
-//   border-radius: 10px;
-// }
 
 .ordersToolbar {
     display: flex;
@@ -194,12 +185,7 @@
 
 @media (max-width: 600px) {
     .container {
-        padding: 16px;
         gap: 20px;
-    }
-
-    .ordersSection {
-        padding: 14px;
     }
 
     .filterWrapper {

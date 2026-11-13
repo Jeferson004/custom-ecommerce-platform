@@ -31,7 +31,7 @@ function ProductCard({ product }) {
                 </p>
 
                 <Link
-                    to={`/products/${product.id}`}
+                    to={`/customer/products/${product.id}`}
                     className={styles.viewButton}
                     aria-disabled={!product.is_active}
                     onClick={(event) => {

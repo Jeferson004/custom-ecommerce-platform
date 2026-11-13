@@ -171,51 +171,53 @@ function AdminInventory() {
                 {inventory.length === 0 ? (
                     <p>No inventory records found.</p>
                 ) : (
-                    <table className={styles.table}>
-                        <thead>
-                            <tr>
-                                <th>ID</th>
-                                <th>Product</th>
-                                <th>Available Stock</th>
-                                <th>Status</th>
-                                <th>Last Updated</th>
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
+                    <div className={styles.tableWrapper}>
+                        <table className={styles.table}>
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Product</th>
+                                    <th>Available Stock</th>
+                                    <th>Status</th>
+                                    <th>Last Updated</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
 
-                        <tbody>
-                            {inventory.map((item) => {
-                                const stockStatus = getStockStatus(item.quantity);
+                            <tbody>
+                                {inventory.map((item) => {
+                                    const stockStatus = getStockStatus(item.quantity);
 
-                                return (
-                                    <tr key={item.id}>
-                                        <td>{item.product_id}</td>
+                                    return (
+                                        <tr key={item.id}>
+                                            <td>{item.product_id}</td>
 
-                                        <td>{item.product_name}</td>
+                                            <td>{item.product_name}</td>
 
-                                        <td>{item.quantity}</td>
+                                            <td>{item.quantity}</td>
 
-                                        <td>
-                                            <span className={stockStatus.className}>
-                                                {stockStatus.label}
-                                            </span>
-                                        </td>
+                                            <td>
+                                                <span className={stockStatus.className}>
+                                                    {stockStatus.label}
+                                                </span>
+                                            </td>
 
-                                        <td>{new Date(item.updated_at).toLocaleString()}</td>
+                                            <td>{new Date(item.updated_at).toLocaleString()}</td>
 
-                                        <td>
-                                            <button
-                                                type="button"
-                                                disabled={updatingProductId === item.product_id}
-                                                onClick={() => handleOpenUpdateForm(item)}>
-                                                Update Stock
-                                            </button>
-                                        </td>
-                                    </tr>
-                                );
-                            })}
-                        </tbody>
-                    </table>
+                                            <td>
+                                                <button
+                                                    type="button"
+                                                    disabled={updatingProductId === item.product_id}
+                                                    onClick={() => handleOpenUpdateForm(item)}>
+                                                    Update Stock
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    );
+                                })}
+                            </tbody>
+                        </table>
+                    </div>
                 )}
             </section>
         </div>

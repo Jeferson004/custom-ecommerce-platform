@@ -84,7 +84,7 @@ function Orders() {
                 <section className={styles.emptyState}>
                     <h2>No orders yet</h2>
                     <p>Your completed checkout orders will appear here.</p>
-                    <Link to="/cart" className={styles.actionLink}>
+                    <Link to="/customer/cart" className={styles.actionLink}>
                         Go to cart
                     </Link>
                 </section>
@@ -116,7 +116,7 @@ function Orders() {
                                     </strong>
                                 </div>
 
-                                <Link to={`/orders/${order.id}`} className={styles.actionLink}>
+                                <Link to={`/customer/orders/${order.id}`} className={styles.actionLink}>
                                     View details
                                 </Link>
                             </div>

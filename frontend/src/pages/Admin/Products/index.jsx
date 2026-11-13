@@ -128,7 +128,9 @@ function AdminProducts() {
                     <p>Manage your store products.</p>
                 </div>
 
-                <button type="button" onClick={showForm ? handleCloseForm : handleAddProduct}>Add product</button>
+                <button type="button" onClick={showForm ? handleCloseForm : handleAddProduct}>
+                    Add product
+                </button>
             </div>
 
             {error && <p role="alert">{error}</p>}
@@ -149,48 +151,50 @@ function AdminProducts() {
                 {products.length === 0 ? (
                     <p>No products found.</p>
                 ) : (
-                    <table className={styles.table}>
-                        <thead>
-                            <tr>
-                                <th>ID</th>
-                                <th>Product</th>
-                                <th>Category</th>
-                                <th>Price</th>
-                                <th>Status</th>
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
-
-                        <tbody>
-                            {products.map((product) => (
-                                <tr key={product.id}>
-                                    <td>{product.id}</td>
-                                    <td>{product.name}</td>
-                                    <td>{product.category_name}</td>
-                                    <td>₱{Number(product.price).toFixed(2)}</td>
-                                    <td>{product.is_active ? 'Active' : 'Inactive'}</td>
-                                    <td>
-                                        <button
-                                            type="button"
-                                            onClick={() => handleEditProduct(product)}>
-                                            Edit
-                                        </button>
-
-                                        <button
-                                            type="button"
-                                            onClick={() => handleToggleProductStatus(product)}
-                                            disabled={updatingProductId === product.id}>
-                                            {updatingProductId === product.id
-                                                ? 'Updating...'
-                                                : product.is_active
-                                                  ? 'Deactivate'
-                                                  : 'Activate'}
-                                        </button>
-                                    </td>
+                    <div className={styles.tableWrapper}>
+                        <table className={styles.table}>
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Product</th>
+                                    <th>Category</th>
+                                    <th>Price</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
                                 </tr>
-                            ))}
-                        </tbody>
-                    </table>
+                            </thead>
+
+                            <tbody>
+                                {products.map((product) => (
+                                    <tr key={product.id}>
+                                        <td>{product.id}</td>
+                                        <td>{product.name}</td>
+                                        <td>{product.category_name}</td>
+                                        <td>₱{Number(product.price).toFixed(2)}</td>
+                                        <td>{product.is_active ? 'Active' : 'Inactive'}</td>
+                                        <td>
+                                            <button
+                                                type="button"
+                                                onClick={() => handleEditProduct(product)}>
+                                                Edit
+                                            </button>
+
+                                            <button
+                                                type="button"
+                                                onClick={() => handleToggleProductStatus(product)}
+                                                disabled={updatingProductId === product.id}>
+                                                {updatingProductId === product.id
+                                                    ? 'Updating...'
+                                                    : product.is_active
+                                                      ? 'Deactivate'
+                                                      : 'Activate'}
+                                            </button>
+                                        </td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    </div>
                 )}
             </section>
         </div>
