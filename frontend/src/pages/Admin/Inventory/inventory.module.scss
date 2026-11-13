@@ -1,34 +1,32 @@
 .container {
     width: 100%;
+}
 
-    .header {
-        margin-bottom: 28px;
+.header {
+    margin-bottom: 28px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    white-space: nowrap;
+
+    th,
+    td {
+        padding: 12px;
+        text-align: left;
+        border-bottom: 1px solid #e5e7eb;
+        font-size: 0.875rem;
     }
 
-    .inventoryList {
-        .table {
-            width: 100%;
-            border-collapse: collapse;
-            white-space: nowrap;
+    th {
+        color: #6b7280;
+        font-weight: 600;
+        background: #f9fafb;
+    }
 
-            th,
-            td {
-                padding: 12px;
-                text-align: left;
-                border-bottom: 1px solid #e5e7eb;
-                font-size: 0.875rem;
-            }
-
-            th {
-                color: #6b7280;
-                font-weight: 600;
-                background: #f9fafb;
-            }
-
-            tbody tr:last-child td {
-                border-bottom: none;
-            }
-        }
+    tr:last-child td {
+        border-bottom: none;
     }
 }
 

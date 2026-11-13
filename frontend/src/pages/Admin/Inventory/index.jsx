@@ -141,7 +141,7 @@ function AdminInventory() {
                         setShowForm((previous) => !previous);
                         setSelectedItem(null);
                     }}>
-                    {showForm ? 'Close Form' : 'Add Inventory'}
+                    Add Inventory
                 </button>
             </div>
 

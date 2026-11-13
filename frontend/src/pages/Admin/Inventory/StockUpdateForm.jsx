@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import styles from './inventory.module.scss';
+import styles from './inventoryForm.module.scss';
 
 function StockUpdateForm({ item, onSubmit, onCancel }) {
     const [quantity, setQuantity] = useState(String(item.quantity));
@@ -34,42 +34,45 @@ function StockUpdateForm({ item, onSubmit, onCancel }) {
     };
 
     return (
-        <form onSubmit={handleSubmit} className={styles.inventoryForm}>
-            <h2>Update Stock</h2>
+        <div className={styles.container}>
+            <form onSubmit={handleSubmit} className={styles.inventoryForm}>
+                <h2>Update Stock</h2>
 
-            <p>
-                Product: <strong>{item.product_name}</strong>
-            </p>
+                <p>
+                    Product: <strong>{item.product_name}</strong>
+                </p>
 
-            <p>
-                Current Stock: <strong>{item.quantity}</strong>
-            </p>
+                <p>
+                    Current Stock: <strong>{item.quantity}</strong>
+                </p>
 
-            {error && <p role="alert">{error}</p>}
+                {error && <p role="alert">{error}</p>}
 
-            <label htmlFor="quantity">New Stock Quantity *</label>
+                <div className={styles.labelAndInput}>
+                    <label htmlFor="quantity">New Stock Quantity *</label>
+                    <input
+                        id="quantity"
+                        name="quantity"
+                        type="number"
+                        min="0"
+                        step="1"
+                        value={quantity}
+                        onChange={(event) => setQuantity(event.target.value)}
+                        required
+                    />
+                </div>
 
-            <input
-                id="quantity"
-                name="quantity"
-                type="number"
-                min="0"
-                step="1"
-                value={quantity}
-                onChange={(event) => setQuantity(event.target.value)}
-                required
-            />
+                <div className={styles.formActions}>
+                    <button type="submit" disabled={loading}>
+                        {loading ? 'Updating...' : 'Save Changes'}
+                    </button>
 
-            <div className={styles.formActions}>
-                <button type="submit" disabled={loading}>
-                    {loading ? 'Updating...' : 'Save Changes'}
-                </button>
-
-                <button type="button" onClick={onCancel} disabled={loading}>
-                    Cancel
-                </button>
-            </div>
-        </form>
+                    <button type="button" onClick={onCancel} disabled={loading}>
+                        Cancel
+                    </button>
+                </div>
+            </form>
+        </div>
     );
 }
 

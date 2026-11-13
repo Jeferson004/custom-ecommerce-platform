@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import styles from './inventory.module.scss';
+import styles from './inventoryForm.module.scss';
 
 function InventoryForm({ products = [], inventory = [], onSubmit, onCancel }) {
     const [formData, setFormData] = useState({
@@ -60,55 +60,61 @@ function InventoryForm({ products = [], inventory = [], onSubmit, onCancel }) {
     };
 
     return (
-        <form onSubmit={handleSubmit} className={styles.inventoryForm}>
-            <h2>Add Inventory</h2>
+        <div className={styles.container}>
+            <form onSubmit={handleSubmit} className={styles.inventoryForm}>
+                <h2>Add Inventory</h2>
 
-            {error && <p role="alert">{error}</p>}
+                {error && <p role="alert">{error}</p>}
 
-            <label htmlFor="product_id">Product *</label>
+                <div className={styles.labelAndInput}>
+                    <label htmlFor="product_id">Product *</label>
+                    <select
+                        id="product_id"
+                        name="product_id"
+                        value={formData.product_id}
+                        onChange={handleChange}
+                        required>
+                        <option value="">Select a product</option>
 
-            <select
-                id="product_id"
-                name="product_id"
-                value={formData.product_id}
-                onChange={handleChange}
-                required>
-                <option value="">Select a product</option>
+                        {availableProducts.map((product) => (
+                            <option key={product.id} value={product.id}>
+                                {product.name}
+                            </option>
+                        ))}
+                    </select>
 
-                {availableProducts.map((product) => (
-                    <option key={product.id} value={product.id}>
-                        {product.name}
-                    </option>
-                ))}
-            </select>
+                    {availableProducts.length === 0 && (
+                        <p>All products already have inventory records.</p>
+                    )}
+                </div>
 
-            {availableProducts.length === 0 && <p>All products already have inventory records.</p>}
+                <div className={styles.labelAndInput}>
+                    <label htmlFor="quantity">Initial Stock Quantity *</label>
+                    <input
+                        id="quantity"
+                        name="quantity"
+                        type="number"
+                        min="0"
+                        step="1"
+                        value={formData.quantity}
+                        onChange={handleChange}
+                        required
+                    />
+                </div>
 
-            <label htmlFor="quantity">Initial Stock Quantity *</label>
-
-            <input
-                id="quantity"
-                name="quantity"
-                type="number"
-                min="0"
-                step="1"
-                value={formData.quantity}
-                onChange={handleChange}
-                required
-            />
-
-            <div className={styles.formActions}>
-                <button type="submit" disabled={loading || availableProducts.length === 0}>
-                    {loading ? 'Saving...' : 'Create Inventory'}
-                </button>
-
-                {onCancel && (
-                    <button type="button" onClick={onCancel} disabled={loading}>
-                        Cancel
+                <div className={styles.formActions}>
+                    <button type="submit" disabled={loading || availableProducts.length === 0}>
+                        {loading ? 'Saving...' : 'Create Inventory'}
                     </button>
-                )}
-            </div>
-        </form>
+
+                    {onCancel && (
+                        <button type="button" onClick={onCancel} disabled={loading}>
+                            Cancel
+                        </button>
+                    )}
+                </div>
+            </form>
+        </div>
     );
 }
 

@@ -60,81 +60,101 @@ function ProductForm({ categories = [], product = null, onSubmit, onCancel }) {
     };
 
     return (
-        <form onSubmit={handleSubmit} className={styles.productForm}>
-            <h2>{isEditing ? 'Edit Product' : 'Add Product'}</h2>
+        <div className={styles.container}>
+            <form onSubmit={handleSubmit} className={styles.productForm}>
+                <h2>{isEditing ? 'Edit Product' : 'Add Product'}</h2>
 
-            {error && <p role="alert">{error}</p>}
+                {error && <p role="alert">{error}</p>}
 
-            <label htmlFor="name">Product Name *</label>
-            <input id="name" name="name" value={formData.name} onChange={handleChange} required />
+                <div className={styles.labelAndInput}>
+                    <label htmlFor="name">Product Name *</label>
+                    <input
+                        id="name"
+                        name="name"
+                        value={formData.name}
+                        onChange={handleChange}
+                        required
+                    />
+                </div>
 
-            <label htmlFor="category_id">Category *</label>
-            <select
-                id="category_id"
-                name="category_id"
-                value={formData.category_id}
-                onChange={handleChange}
-                required>
-                <option value="">Select a category</option>
+                <div className={styles.labelAndInput}>
+                    <label htmlFor="category_id">Category *</label>
+                    <select
+                        id="category_id"
+                        name="category_id"
+                        value={formData.category_id}
+                        onChange={handleChange}
+                        required>
+                        <option value="">Select a category</option>
 
-                {categories.map((category) => (
-                    <option key={category.id} value={category.id}>
-                        {category.name}
-                    </option>
-                ))}
-            </select>
+                        {categories.map((category) => (
+                            <option key={category.id} value={category.id}>
+                                {category.name}
+                            </option>
+                        ))}
+                    </select>
+                </div>
 
-            <label htmlFor="price">Price *</label>
-            <input
-                id="price"
-                name="price"
-                type="number"
-                min="0"
-                step="0.01"
-                value={formData.price}
-                onChange={handleChange}
-                required
-            />
+                <div className={styles.labelAndInput}>
+                    <label htmlFor="price">Price *</label>
+                    <input
+                        id="price"
+                        name="price"
+                        type="number"
+                        min="0"
+                        step="0.01"
+                        value={formData.price}
+                        onChange={handleChange}
+                        required
+                    />
+                </div>
 
-            <label htmlFor="description">Description</label>
-            <textarea
-                id="description"
-                name="description"
-                value={formData.description}
-                onChange={handleChange}
-            />
+                <div className={styles.labelAndInput}>
+                    <label htmlFor="description">Description</label>
+                    <textarea
+                        id="description"
+                        name="description"
+                        value={formData.description}
+                        onChange={handleChange}
+                    />
+                </div>
 
-            <label htmlFor="sku">SKU</label>
-            <input id="sku" name="sku" value={formData.sku} onChange={handleChange} />
+                <div className={styles.labelAndInput}>
+                    <label htmlFor="sku">SKU</label>
+                    <input id="sku" name="sku" value={formData.sku} onChange={handleChange} />
+                </div>
 
-            <label>
-                <input
-                    type="checkbox"
-                    name="is_active"
-                    checked={formData.is_active}
-                    onChange={handleChange}
-                />
-                Active product
-            </label>
+                <div className={styles.labelAndInput}>
+                    <label>
+                        <input
+                            type="checkbox"
+                            name="is_active"
+                            checked={formData.is_active}
+                            onChange={handleChange}
+                        />
+                        Active product
+                    </label>
+                </div>
 
-            <div className={styles.formActions}>
-                <button type="submit" disabled={loading}>
-                    {loading
-                        ? isEditing
-                            ? 'Updating...'
-                            : 'Creating...'
-                        : isEditing
-                          ? 'Update Product'
-                          : 'Create Product'}
-                </button>
-
-                {onCancel && (
-                    <button type="button" onClick={onCancel} disabled={loading}>
-                        Cancel
+                <div className={styles.formActions}>
+                    <button type="submit" disabled={loading}>
+                        {loading
+                            ? isEditing
+                                ? 'Updating...'
+                                : 'Creating...'
+                            : isEditing
+                              ? 'Update Product'
+                              : 'Create Product'}
                     </button>
-                )}
-            </div>
-        </form>
+
+                    {onCancel && (
+                        <button type="button" onClick={onCancel} disabled={loading}>
+                            Cancel
+                        </button>
+                    )}
+                </div>
+            </form>
+        </div>
     );
 }
 

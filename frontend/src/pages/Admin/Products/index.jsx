@@ -128,9 +128,7 @@ function AdminProducts() {
                     <p>Manage your store products.</p>
                 </div>
 
-                <button type="button" onClick={showForm ? handleCloseForm : handleAddProduct}>
-                    {showForm ? 'Close Form' : 'Add Product'}
-                </button>
+                <button type="button" onClick={showForm ? handleCloseForm : handleAddProduct}>Add product</button>
             </div>
 
             {error && <p role="alert">{error}</p>}
