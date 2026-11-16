@@ -1,19 +1,24 @@
-.login {
+.loginContainer {
     width: min(100% - 2rem, 420px);
     margin: 4rem auto;
-    padding: 2rem;
-    border: 1px solid #e5e5e5;
-    border-radius: 12px;
-
-    h1 {
-        margin-bottom: 0.5rem;
+    height: 100%;
+    
+    .headerText {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
     }
-
+    
     form {
         display: flex;
         flex-direction: column;
-        gap: 0.75rem;
-        margin-top: 1.5rem;
+        gap: 16px;
+    }
+
+    .labelAndInput {
+        display: flex;
+        flex-direction: column;
+        row-gap: 8px;
     }
 
     input {
@@ -25,7 +30,6 @@
     }
 
     button {
-        margin-top: 0.5rem;
         padding: 0.8rem;
         border: none;
         border-radius: 6px;
