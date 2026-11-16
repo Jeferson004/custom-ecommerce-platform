@@ -47,7 +47,11 @@
     margin: 0 0 10px;
     font-size: 1.125rem;
     line-height: 1.4;
-    overflow-wrap: anywhere;
+
+    width: 100%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .description {
@@ -55,6 +59,12 @@
     color: #666;
     font-size: 0.9rem;
     line-height: 1.6;
+
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    overflow: hidden;
 }
 
 .price {

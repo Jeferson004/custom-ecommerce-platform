@@ -3,13 +3,8 @@ import { Link } from 'react-router-dom';
 import { getCart } from '../../api/cart';
 import { getAddresses } from '../../api/addresses';
 import { createOrder } from '../../api/orders';
+import { formatPrice } from '../../utils/formatPrice';
 import styles from './checkout.module.scss';
-
-const formatPrice = (amount) =>
-    new Intl.NumberFormat('en-PH', {
-        style: 'currency',
-        currency: 'PHP',
-    }).format(Number(amount) || 0);
 
 function Checkout() {
     const [cart, setCart] = useState(null);
@@ -116,15 +111,15 @@ function Checkout() {
 
     if (isLoading) {
         return (
-            <main className={styles.checkout}>
+            <div className={styles.checkoutContainer}>
                 <p role="status">Loading checkout...</p>
-            </main>
+            </div>
         );
     }
 
     if (placedOrder) {
         return (
-            <main className={styles.checkout}>
+            <div className={styles.checkoutContainer}>
                 <section className={styles.confirmation} aria-live="polite">
                     <h1>Order placed successfully</h1>
                     <p>Your order has been created.</p>
@@ -145,24 +140,24 @@ function Checkout() {
                         Return to cart
                     </Link>
                 </section>
-            </main>
+            </div>
         );
     }
 
     if (items.length === 0) {
         return (
-            <main className={styles.checkout}>
+            <div className={styles.checkoutContainer}>
                 <h1>Checkout</h1>
                 <p>Your cart is empty.</p>
                 <Link to="/customer/cart" className={styles.secondaryLink}>
                     Return to cart
                 </Link>
-            </main>
+            </div>
         );
     }
 
     return (
-        <main className={styles.checkout}>
+        <div className={styles.checkoutContainer}>
             <h1>Checkout</h1>
 
             {error && (
@@ -287,7 +282,7 @@ function Checkout() {
                     </p>
                 </aside>
             </div>
-        </main>
+        </div>
     );
 }
 

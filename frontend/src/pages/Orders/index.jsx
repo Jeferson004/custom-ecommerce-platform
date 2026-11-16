@@ -1,28 +1,10 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { getOrders } from '../../api/orders';
+import { formatPrice } from '../../utils/formatPrice';
+import { formatDate } from '../../utils/formatDate';
+
 import styles from './orders.module.scss';
-
-const formatPrice = (amount) =>
-    new Intl.NumberFormat('en-PH', {
-        style: 'currency',
-        currency: 'PHP',
-    }).format(Number(amount) || 0);
-
-const formatDate = (date) => {
-    if (!date) return 'Date unavailable';
-
-    const parsedDate = new Date(date);
-
-    if (Number.isNaN(parsedDate.getTime())) {
-        return 'Date unavailable';
-    }
-
-    return parsedDate.toLocaleString('en-PH', {
-        dateStyle: 'medium',
-        timeStyle: 'short',
-    });
-};
 
 function Orders() {
     const [orders, setOrders] = useState([]);
@@ -62,15 +44,15 @@ function Orders() {
 
     if (isLoading) {
         return (
-            <main className={styles.ordersPage}>
+            <div className={styles.ordersContainer}>
                 <h1>My Orders</h1>
                 <p role="status">Loading your orders...</p>
-            </main>
+            </div>
         );
     }
 
     return (
-        <main className={styles.ordersPage}>
+        <div className={styles.ordersContainer}>
             <h1>My Orders</h1>
             <p className={styles.description}>View your order history and track your purchases.</p>
 
@@ -124,7 +106,7 @@ function Orders() {
                     ))}
                 </div>
             )}
-        </main>
+        </div>
     );
 }
 

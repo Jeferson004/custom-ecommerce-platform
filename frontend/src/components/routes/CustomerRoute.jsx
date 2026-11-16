@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
 import { Navigate, Outlet } from 'react-router-dom';
-import { supabase } from '../../configs/supabase';
+import { supabase } from '../configs/supabase';
 
-function AdminRoute() {
+function CustomerRoute() {
     const [status, setStatus] = useState('loading');
 
     useEffect(() => {
@@ -33,10 +33,8 @@ function AdminRoute() {
                     return;
                 }
 
-                // 3. Allow staff and administrators.
-                const allowedRoles = ['staff', 'admin'];
-
-                if (allowedRoles.includes(profile.role)) {
+                // 3. Allow customers only.
+                if (profile.role === 'customer') {
                     if (active) setStatus('authorized');
                 } else {
                     if (active) setStatus('unauthorized');
@@ -68,4 +66,4 @@ function AdminRoute() {
     return <Outlet />;
 }
 
-export default AdminRoute;
+export default CustomerRoute;

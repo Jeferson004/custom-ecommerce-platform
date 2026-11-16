@@ -1,7 +1,7 @@
 
 import { useEffect, useState } from 'react';
 import { Navigate, Outlet } from 'react-router-dom';
-import { supabase } from '../../configs/supabase';
+import { supabase } from '../configs/supabase';
 
 function CustomerRoute() {
     const [status, setStatus] = useState('loading');

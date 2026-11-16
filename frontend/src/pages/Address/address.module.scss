@@ -1,8 +1,8 @@
-.page {
-    width: min(100% - 2rem, 1000px);
-    margin: 0 auto;
-    padding: 2.5rem 0;
-    color: #222;
+.addressContainer {
+    width: min(1200px, calc(100% - 32px));
+    margin-inline: auto;
+    padding-block: 40px;
+    margin-top: 74px;
 }
 
 .header {
@@ -231,11 +231,11 @@
     color: #236b38;
 }
 
-@media (max-width: 600px) {
-    .page {
-        width: min(100% - 1.25rem, 1000px);
-        padding-block: 1.5rem;
-    }
+@media (max-width: 500px) {
+    // .addressContainer {
+    //     width: min(100% - 1.25rem, 1000px);
+    //     padding-block: 1.5rem;
+    // }
 
     .header {
         align-items: flex-start;

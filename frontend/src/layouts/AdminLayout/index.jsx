@@ -1,35 +1,27 @@
-import { useState } from 'react';
 import { Outlet } from 'react-router-dom';
 import AdminSidebar from '../../components/Sidebar/AdminSidebar';
 import AdminHeader from '../../components/Headers/AdminHeader';
+import { useToggle } from '../../hooks/useToggle';
 import styles from './adminLayout.module.scss';
 
 function AdminLayout() {
-    const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-
-    const toggleSidebar = () => {
-        setIsSidebarOpen((prev) => !prev);
-    };
-
-    const closeSidebar = () => {
-        setIsSidebarOpen(false);
-    };
+    const { isOpen, toggle, close } = useToggle();
 
     return (
         <div className={styles.container}>
-            <AdminSidebar isOpen={isSidebarOpen} onNavigate={closeSidebar} />
+            <AdminSidebar isOpen={isOpen} onNavigate={close} />
 
-            {isSidebarOpen && (
+            {isOpen && (
                 <button
                     type="button"
                     className={styles.sidebarOverlay}
-                    onClick={closeSidebar}
+                    onClick={close}
                     aria-label="Close sidebar"
                 />
             )}
 
             <div className={styles.content}>
-                <AdminHeader onMenuClick={toggleSidebar} />
+                <AdminHeader onMenuClick={toggle} />
 
                 <main className={styles.main}>
                     <Outlet />

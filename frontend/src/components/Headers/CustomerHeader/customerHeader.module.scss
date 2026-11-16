@@ -1,0 +1,146 @@
+.header {
+    width: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 995;
+    border-bottom: 1px solid lightgray;
+
+    .navbar {
+        width: min(1200px, calc(100% - 32px));
+        margin-inline: auto;
+        padding: 16px;
+        background-color: white;
+    }
+}
+
+.container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.navigation {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+.list {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+
+    li {
+        .links,
+        .activeLink,
+        button {
+            display: block;
+            text-decoration: none;
+            color: black;
+            padding: 12px 8px;
+            border: none;
+            background-color: transparent;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+
+            &:hover {
+                background-color: lightgray;
+            }
+        }
+
+        .activeLink {
+            background-color: black;
+            color: #ffffff;
+            font-weight: 600;
+        }
+    }
+}
+
+.logoutButton {
+    &:hover {
+        background-color: lightgray;
+    }
+}
+
+// Hamburger button
+.menuToggle {
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    gap: 5px;
+    width: 42px;
+    height: 42px;
+    padding: 8px;
+    border: none;
+    border-radius: 6px;
+    background-color: transparent;
+    cursor: pointer;
+
+    span {
+        display: block;
+        width: 24px;
+        height: 2px;
+        background-color: black;
+        border-radius: 2px;
+    }
+
+    &:hover {
+        background-color: lightgray;
+    }
+}
+
+// Mobile responsive
+@media (max-width: 768px) {
+    .container {
+        justify-content: flex-end;
+    }
+
+    .menuToggle {
+        display: flex;
+    }
+
+    .navigation {
+        display: none;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        width: 100%;
+        padding: 16px;
+        background-color: white;
+        border-top: 1px solid lightgray;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.08);
+        box-sizing: border-box;
+    }
+
+    .sidebarOpen {
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 12px;
+    }
+
+    .list {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 4px;
+        width: 100%;
+
+        li {
+            width: 100%;
+
+            .links,
+            .activeLink,
+            button {
+                width: 100%;
+                box-sizing: border-box;
+                text-align: left;
+            }
+        }
+    }
+}

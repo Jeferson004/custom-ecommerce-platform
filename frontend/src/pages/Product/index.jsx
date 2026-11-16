@@ -42,17 +42,17 @@ function ProductPage() {
 
     if (loading) {
         return (
-            <main className={styles.productPage}>
+            <div className={styles.productContainer}>
                 <p role="status" className={styles.message}>
                     Loading products...
                 </p>
-            </main>
+            </div>
         );
     }
 
     if (error) {
         return (
-            <main className={styles.productPage}>
+            <div className={styles.productContainer}>
                 <h1 className={styles.title}>Products</h1>
                 <p role="alert" className={styles.error}>
                     Unable to load products: {error}
@@ -64,13 +64,13 @@ function ProductPage() {
                     onClick={() => window.location.reload()}>
                     Try again
                 </button>
-            </main>
+            </div>
         );
     }
 
     return (
         <>
-            <main className={styles.productPage}>
+            <div className={styles.productContainer}>
                 <header className={styles.header}>
                     <h1 className={styles.title}>Our Products</h1>
                     <p className={styles.subtitle}>Browse our available products.</p>
@@ -87,7 +87,7 @@ function ProductPage() {
                         </div>
                     )}
                 </section>
-            </main>
+            </div>
         </>
     );
 }

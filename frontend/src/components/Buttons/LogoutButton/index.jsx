@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom';
-import { useAuth } from '../../../contexts/Auths/useAuth';
+import { useAuth } from '../../../hooks/useAuth';
 
 function LogoutButton({ className }) {
     const { profile, logout } = useAuth();

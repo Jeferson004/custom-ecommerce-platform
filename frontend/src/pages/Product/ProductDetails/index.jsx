@@ -110,11 +110,11 @@ function ProductDetails() {
     // Product loading state
     if (loadingProduct) {
         return (
-            <main className={styles.productPage}>
+            <div className={styles.productPage}>
                 <p role="status" className={styles.message}>
                     Loading product...
                 </p>
-            </main>
+            </div>
         );
     }
 
@@ -125,7 +125,7 @@ function ProductDetails() {
             productError.toLowerCase().includes('404');
 
         return (
-            <main className={styles.productDetails}>
+            <div className={styles.productsContainer}>
                 <h1>{isNotFound ? 'Product not found' : 'Unable to load product'}</h1>
 
                 <p className={styles.error} role="alert">
@@ -135,18 +135,18 @@ function ProductDetails() {
                 </p>
 
                 <Link to="/">Back to products</Link>
-            </main>
+            </div>
         );
     }
 
     // Product unavailable state
     if (!product || !product.is_active) {
         return (
-            <main className={styles.productDetails}>
+            <div className={styles.productsContainer}>
                 <h1>Product unavailable</h1>
                 <p>This product is unavailable or does not exist.</p>
                 <Link to="/">Back to products</Link>
-            </main>
+            </div>
         );
     }
 
@@ -156,7 +156,7 @@ function ProductDetails() {
     const otherProducts = products.filter((item) => String(item.id) !== String(product.id));
 
     return (
-        <main className={styles.productDetails}>
+        <div className={styles.productsContainer}>
             <Link to="/customer" className={styles.backLink}>
                 ← Back to products
             </Link>
@@ -212,7 +212,7 @@ function ProductDetails() {
                     </div>
                 )}
             </section>
-        </main>
+        </div>
     );
 }
 

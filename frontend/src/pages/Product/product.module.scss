@@ -1,7 +1,8 @@
-.productPage {
+.productContainer {
     width: min(1200px, calc(100% - 32px));
     margin-inline: auto;
     padding-block: 40px;
+    margin-top: 74px;
 }
 
 .header {
@@ -63,12 +64,12 @@
 }
 
 @media (max-width: 520px) {
-    .productPage {
+    .productContainer {
         padding-block: 24px;
     }
 
     .productGrid {
-        grid-template-columns: minmax(0, 1fr);
+        grid-template-columns: repeat(2, minmax(0, 1fr));
         gap: 16px;
     }
 }

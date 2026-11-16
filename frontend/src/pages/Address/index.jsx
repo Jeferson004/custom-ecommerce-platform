@@ -207,11 +207,11 @@ export default function Address() {
     };
 
     if (isLoading) {
-        return <main className={styles.page}>Loading addresses...</main>;
+        return <div className={styles.addressContainer}>Loading addresses...</div>;
     }
 
     return (
-        <main className={styles.page}>
+        <div className={styles.addressContainer}>
             <header className={styles.header}>
                 <div>
                     <h1>My Addresses</h1>
@@ -437,6 +437,6 @@ export default function Address() {
                     ))}
                 </section>
             )}
-        </main>
+        </div>
     );
 }

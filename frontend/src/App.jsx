@@ -8,7 +8,7 @@ import Address from './pages/Address';
 import Checkout from './pages/Checkout';
 import Orders from './pages/Orders';
 import OrderDetails from './pages/Orders/OrderDetails';
-import AdminRoute from './components/Auth/AdminRoute';
+import AdminRoute from './routes/AdminRoute';
 import AdminProducts from './pages/Admin/Products';
 import AdminInventory from './pages/Admin/Inventory';
 import AdminTransactions from './pages/Admin/Transactions';
@@ -16,9 +16,9 @@ import AdminDashboard from './pages/Admin/Dashboard';
 import AdminLayout from './layouts/AdminLayout';
 import AdminOrders from './pages/Admin/Orders';
 import AdminOrderDetails from './pages/Admin/Orders/OrderDetails';
-import { AuthProvider } from './contexts/Auths/AuthProvider';
+import { AuthProvider } from './providers/AuthProvider';
 import CustomerLayout from './layouts/CustomerLayout';
-import CustomerRoute from './components/Auth/CustomerRoute';
+import CustomerRoute from './routes/CustomerRoute';
 
 function App() {
     return (

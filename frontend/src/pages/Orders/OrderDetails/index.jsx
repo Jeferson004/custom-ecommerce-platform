@@ -1,28 +1,9 @@
 import { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { cancelOrder, getOrderById } from '../../../api/orders';
+import { formatPrice } from '../../../utils/formatPrice';
+import { formatDate } from '../../../utils/formatDate';
 import styles from './orderDetails.module.scss';
-
-const formatPrice = (amount) =>
-    new Intl.NumberFormat('en-PH', {
-        style: 'currency',
-        currency: 'PHP',
-    }).format(Number(amount) || 0);
-
-const formatDate = (date) => {
-    if (!date) return 'Date unavailable';
-
-    const parsedDate = new Date(date);
-
-    if (Number.isNaN(parsedDate.getTime())) {
-        return 'Date unavailable';
-    }
-
-    return parsedDate.toLocaleString('en-PH', {
-        dateStyle: 'medium',
-        timeStyle: 'short',
-    });
-};
 
 function OrderDetails() {
     const { id } = useParams();

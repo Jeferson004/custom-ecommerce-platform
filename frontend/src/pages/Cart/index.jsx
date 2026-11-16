@@ -122,15 +122,17 @@ function Cart() {
 
     if (loading) {
         return (
-            <p className={styles.message} role="status">
-                Loading cart...
-            </p>
+            <div className={styles.cartContainer}>
+                <p className={styles.message} role="status">
+                    Loading cart...
+                </p>
+            </div>
         );
     }
 
     if (error && !cart && items.length === 0) {
         return (
-            <main className={styles.cart}>
+            <div className={styles.cartContainer}>
                 <h1>Shopping Cart</h1>
                 <p className={styles.error} role="alert">
                     {error}
@@ -138,12 +140,12 @@ function Cart() {
                 <button type="button" onClick={loadCart}>
                     Try again
                 </button>
-            </main>
+            </div>
         );
     }
 
     return (
-        <main className={styles.cart}>
+        <div className={styles.cartContainer}>
             <h1>Shopping Cart</h1>
 
             {error && (
@@ -239,7 +241,7 @@ function Cart() {
                     </section>
                 </>
             )}
-        </main>
+        </div>
     );
 }
 
