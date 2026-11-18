@@ -1,5 +1,6 @@
+import { createPaymentCheckout } from '../services/payments/paymentService.js';
+
 import {
-    createPayment as createPaymentModel,
     findPaymentsByProfileId,
     findPaymentById,
     updatePaymentMethod,
@@ -23,14 +24,15 @@ export const createPayment = async (req, res) => {
     }
 
     try {
-        const payment = await createPaymentModel(profileId, order_id, payment_method.trim());
+        const payment = await createPaymentCheckout(profileId, order_id, payment_method.trim());
 
         return res.status(201).json({
-            message: 'Payment record created successfully.',
+            message: 'Payment checkout created successfully.',
             payment,
+            checkout_url: payment.checkout_url,
         });
     } catch (error) {
-        console.error('Create payment error:', error);
+        console.error('Create payment checkout error:', error);
 
         if (error.statusCode === 404) {
             return res.status(404).json({
@@ -46,12 +48,12 @@ export const createPayment = async (req, res) => {
 
         if (error.statusCode === 409 || error.code === '23505') {
             return res.status(409).json({
-                message: 'A payment record already exists for this order.',
+                message: error.message,
             });
         }
 
         return res.status(500).json({
-            message: 'Failed to create payment record.',
+            message: 'Failed to create payment checkout.',
         });
     }
 };
