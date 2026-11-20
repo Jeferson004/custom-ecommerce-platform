@@ -65,6 +65,7 @@ export const createPaymentCheckout = async (profileId, orderId, paymentMethod) =
         attempt.id,
         session.paymentSessionId,
         session.checkoutUrl,
+        session.expiresAt,
     );
 
     if (!updatedAttempt) {

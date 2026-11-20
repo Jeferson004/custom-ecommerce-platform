@@ -12,6 +12,16 @@ const getAuthorizationHeader = () => {
     return `Basic ${encodedCredentials}`;
 };
 
+const getSessionExpiration = () => {
+    const expiryMinutes = Number(process.env.XENDIT_SESSION_EXPIRY_MINUTES ?? 30);
+
+    if (!Number.isInteger(expiryMinutes) || expiryMinutes < 10) {
+        throw new Error('XENDIT_SESSION_EXPIRY_MINUTES must be an integer of at least 10.');
+    }
+
+    return new Date(Date.now() + expiryMinutes * 60 * 1000).toISOString();
+};
+
 // POST /sessions
 export const createPaymentSession = async ({
     referenceId,
@@ -24,6 +34,8 @@ export const createPaymentSession = async ({
         throw new Error('A valid payment amount is required.');
     }
 
+    const expiresAt = getSessionExpiration();
+
     const payload = {
         reference_id: referenceId,
         session_type: 'PAY',
@@ -32,12 +44,9 @@ export const createPaymentSession = async ({
         currency: 'PHP',
         country: 'PH',
         description,
-        ...(successReturnUrl && {
-            success_return_url: successReturnUrl,
-        }),
-        ...(cancelReturnUrl && {
-            cancel_return_url: cancelReturnUrl,
-        }),
+        expires_at: expiresAt,
+        ...(successReturnUrl && { success_return_url: successReturnUrl }),
+        ...(cancelReturnUrl && { cancel_return_url: cancelReturnUrl }),
     };
 
     const response = await fetch(`${XENDIT_API_URL}/sessions`, {
@@ -70,7 +79,7 @@ export const createPaymentSession = async ({
         checkoutUrl: data.payment_link_url,
         referenceId: data.reference_id,
         status: data.status,
-        expiresAt: data.expires_at || null,
+        expiresAt: data.expires_at || expiresAt,
     };
 };
 
