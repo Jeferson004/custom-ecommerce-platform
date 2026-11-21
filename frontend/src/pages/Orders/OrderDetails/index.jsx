@@ -76,30 +76,30 @@ function OrderDetails() {
 
     if (isLoading) {
         return (
-            <main className={styles.page}>
+            <div className={styles.ordersDetailsContainer}>
                 <p role="status">Loading order details...</p>
-            </main>
+            </div>
         );
     }
 
     if (error && !orderData) {
         return (
-            <main className={styles.page}>
+            <div className={styles.ordersDetailsContainer}>
                 <h1>Order Details</h1>
                 <p className={styles.error} role="alert">
                     {error}
                 </p>
                 <Link to="/orders">Back to my orders</Link>
-            </main>
+            </div>
         );
     }
 
     if (!orderData?.order) {
         return (
-            <main className={styles.page}>
+            <div className={styles.ordersDetailsContainer}>
                 <h1>Order not found</h1>
                 <Link to="/orders">Back to my orders</Link>
-            </main>
+            </div>
         );
     }
 
@@ -107,7 +107,7 @@ function OrderDetails() {
     const canCancel = order.status === 'pending';
 
     return (
-        <main className={styles.page}>
+        <div className={styles.ordersDetailsContainer}>
             <Link to="/orders" className={styles.backLink}>
                 ← Back to my orders
             </Link>
@@ -201,7 +201,7 @@ function OrderDetails() {
                     </button>
                 </section>
             )}
-        </main>
+        </div>
     );
 }
 

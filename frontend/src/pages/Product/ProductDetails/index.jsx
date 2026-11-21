@@ -110,7 +110,7 @@ function ProductDetails() {
     // Product loading state
     if (loadingProduct) {
         return (
-            <div className={styles.productPage}>
+            <div className={styles.productsContainer}>
                 <p role="status" className={styles.message}>
                     Loading product...
                 </p>
