@@ -1,7 +1,6 @@
 .container {
     width: 100%;
     min-width: 0;
-    padding: 24px;
     display: flex;
     flex-direction: column;
     gap: 24px;
@@ -141,7 +140,6 @@
 
 @media (max-width: 600px) {
     .container {
-        padding: 16px;
         gap: 20px;
     }
 

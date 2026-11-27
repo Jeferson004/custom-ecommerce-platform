@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import { getAddresses, createAddress, updateAddress, deleteAddress } from '../../api/addresses';
 import styles from './address.module.scss';
+import CustomerLoading from '../../components/Loadings/CustomerLoading';
 
 const emptyForm = {
     label: 'Home',
@@ -207,7 +208,7 @@ export default function Address() {
     };
 
     if (isLoading) {
-        return <div className={styles.addressContainer}>Loading addresses...</div>;
+        return <CustomerLoading />;
     }
 
     return (

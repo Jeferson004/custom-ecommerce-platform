@@ -128,7 +128,7 @@ function AdminProducts() {
                     <p>Manage your store products.</p>
                 </div>
 
-                <button type="button" onClick={showForm ? handleCloseForm : handleAddProduct}>
+                <button type="button" onClick={handleAddProduct}>
                     Add product
                 </button>
             </div>
@@ -137,7 +137,6 @@ function AdminProducts() {
 
             {showForm && (
                 <ProductForm
-                    key={editingProduct?.id ?? 'new'}
                     categories={categories}
                     product={editingProduct}
                     onSubmit={handleSubmitProduct}

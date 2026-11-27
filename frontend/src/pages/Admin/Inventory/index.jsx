@@ -1,25 +1,37 @@
 import { useEffect, useState } from 'react';
 import { getInventory, createInventory, updateInventory } from '../../../api/inventory';
 import { getProducts } from '../../../api/products';
-import InventoryForm from './InventoryForm';
-import StockUpdateForm from './StockUpdateForm';
+import InventoryForm from './InventoryForm/InventoryForm';
+import StockUpdateForm from './InventoryForm/StockUpdateForm';
 import styles from './inventory.module.scss';
 
 const LOW_STOCK_THRESHOLD = 5;
+
+const getStockStatus = (quantity) => {
+    const stock = Number(quantity);
+
+    if (stock === 0) {
+        return { label: 'Out of Stock', className: styles.outOfStock };
+    }
+
+    if (stock <= LOW_STOCK_THRESHOLD) {
+        return { label: 'Low Stock', className: styles.lowStock };
+    }
+
+    return { label: 'In Stock', className: styles.inStock };
+};
 
 function AdminInventory() {
     const [inventory, setInventory] = useState([]);
     const [products, setProducts] = useState([]);
     const [showForm, setShowForm] = useState(false);
-    const [updatingProductId, setUpdatingProductId] = useState(null);
+    const [selectedItem, setSelectedItem] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState('');
-    const [selectedItem, setSelectedItem] = useState(null);
 
-    // Fetch inventory, products, and transaction history.
+    // Refetch inventory and products without replacing the page with the loading state.
     const fetchData = async () => {
         try {
-            setLoading(true);
             setError('');
 
             const [inventoryData, productsData] = await Promise.all([getInventory(), getProducts()]);
@@ -29,8 +41,6 @@ function AdminInventory() {
         } catch (error) {
             console.error('Fetch inventory data error:', error);
             setError(error.message || 'Failed to fetch inventory data.');
-        } finally {
-            setLoading(false);
         }
     };
 
@@ -68,64 +78,25 @@ function AdminInventory() {
         };
     }, []);
 
-    // Create an inventory record.
+    // Create an inventory record. Errors propagate to the form.
     const handleCreateInventory = async (inventoryData) => {
         await createInventory(inventoryData.product_id, inventoryData.quantity);
-
         await fetchData();
 
         setShowForm(false);
     };
 
-    // Update an existing inventory quantity.
+    // Update an existing inventory quantity. Errors propagate to the form.
     const handleUpdateQuantity = async (item, quantity) => {
-        try {
-            setError('');
-            setUpdatingProductId(item.product_id);
+        await updateInventory(item.product_id, quantity);
+        await fetchData();
 
-            await updateInventory(item.product_id, quantity);
-
-            await fetchData();
-
-            setSelectedItem(null);
-        } catch (error) {
-            setError(error.message || 'Unable to update inventory.');
-            throw error;
-        } finally {
-            setUpdatingProductId(null);
-        }
-    };
-
-    const handleOpenUpdateForm = (item) => {
-        setSelectedItem(item);
+        setSelectedItem(null);
     };
 
     if (loading) {
         return <p role="status">Loading inventory...</p>;
     }
-
-    const getStockStatus = (quantity) => {
-        const stock = Number(quantity);
-
-        if (stock === 0) {
-            return {
-                label: 'Out of Stock',
-                className: styles.outOfStock,
-            };
-        }
-
-        if (stock <= LOW_STOCK_THRESHOLD) {
-            return {
-                label: 'Low Stock',
-                className: styles.lowStock,
-            };
-        }
-
-        return {
-            label: 'In Stock',
-            className: styles.inStock,
-        };
-    };
 
     return (
         <div className={styles.container}>
@@ -135,12 +106,7 @@ function AdminInventory() {
                     <p>Monitor and manage your product stock.</p>
                 </div>
 
-                <button
-                    type="button"
-                    onClick={() => {
-                        setShowForm((previous) => !previous);
-                        setSelectedItem(null);
-                    }}>
+                <button type="button" onClick={() => setShowForm(true)}>
                     Add Inventory
                 </button>
             </div>
@@ -158,7 +124,6 @@ function AdminInventory() {
 
             {selectedItem && (
                 <StockUpdateForm
-                    key={selectedItem.product_id}
                     item={selectedItem}
                     onSubmit={handleUpdateQuantity}
                     onCancel={() => setSelectedItem(null)}
@@ -191,24 +156,18 @@ function AdminInventory() {
                                     return (
                                         <tr key={item.id}>
                                             <td>{item.product_id}</td>
-
                                             <td>{item.product_name}</td>
-
                                             <td>{item.quantity}</td>
-
                                             <td>
                                                 <span className={stockStatus.className}>
                                                     {stockStatus.label}
                                                 </span>
                                             </td>
-
                                             <td>{new Date(item.updated_at).toLocaleString()}</td>
-
                                             <td>
                                                 <button
                                                     type="button"
-                                                    disabled={updatingProductId === item.product_id}
-                                                    onClick={() => handleOpenUpdateForm(item)}>
+                                                    onClick={() => setSelectedItem(item)}>
                                                     Update Stock
                                                 </button>
                                             </td>

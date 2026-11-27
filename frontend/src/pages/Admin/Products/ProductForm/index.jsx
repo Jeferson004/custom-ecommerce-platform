@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useModalDialog } from '../../../../hooks/useModalDialog';
 import styles from './ProductForm.module.scss';
 
 function ProductForm({ categories = [], product = null, onSubmit, onCancel }) {
@@ -13,8 +14,11 @@ function ProductForm({ categories = [], product = null, onSubmit, onCancel }) {
 
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
+    const { dialogRef, handleCancel } = useModalDialog({ onCancel, isBusy: loading });
 
     const isEditing = Boolean(product);
+    const submitLabel = isEditing ? 'Update Product' : 'Create Product';
+    const loadingLabel = isEditing ? 'Updating...' : 'Creating...';
 
     const handleChange = (event) => {
         const { name, value, type, checked } = event.target;
@@ -60,9 +64,13 @@ function ProductForm({ categories = [], product = null, onSubmit, onCancel }) {
     };
 
     return (
-        <div className={styles.container}>
+        <dialog
+            ref={dialogRef}
+            className={styles.dialog}
+            aria-labelledby="product-form-title"
+            onCancel={handleCancel}>
             <form onSubmit={handleSubmit} className={styles.productForm}>
-                <h2>{isEditing ? 'Edit Product' : 'Add Product'}</h2>
+                <h2 id="product-form-title">{isEditing ? 'Edit Product' : 'Add Product'}</h2>
 
                 {error && <p role="alert">{error}</p>}
 
@@ -138,13 +146,7 @@ function ProductForm({ categories = [], product = null, onSubmit, onCancel }) {
 
                 <div className={styles.formActions}>
                     <button type="submit" disabled={loading}>
-                        {loading
-                            ? isEditing
-                                ? 'Updating...'
-                                : 'Creating...'
-                            : isEditing
-                              ? 'Update Product'
-                              : 'Create Product'}
+                        {loading ? loadingLabel : submitLabel}
                     </button>
 
                     {onCancel && (
@@ -154,7 +156,7 @@ function ProductForm({ categories = [], product = null, onSubmit, onCancel }) {
                     )}
                 </div>
             </form>
-        </div>
+        </dialog>
     );
 }
 

@@ -5,6 +5,7 @@ import { formatPrice } from '../../utils/formatPrice';
 import { formatDate } from '../../utils/formatDate';
 
 import styles from './orders.module.scss';
+import CustomerLoading from '../../components/Loadings/CustomerLoading';
 
 function Orders() {
     const [orders, setOrders] = useState([]);
@@ -43,12 +44,7 @@ function Orders() {
     }, []);
 
     if (isLoading) {
-        return (
-            <div className={styles.ordersContainer}>
-                <h1>My Orders</h1>
-                <p role="status">Loading your orders...</p>
-            </div>
-        );
+        return <CustomerLoading />;
     }
 
     return (

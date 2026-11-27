@@ -54,18 +54,18 @@
     text-overflow: ellipsis;
 }
 
-.description {
-    margin: 0 0 16px;
-    color: #666;
-    font-size: 0.9rem;
-    line-height: 1.6;
+// .description {
+//     margin: 0 0 16px;
+//     color: #666;
+//     font-size: 0.9rem;
+//     line-height: 1.6;
 
-    display: -webkit-box;
-    -webkit-box-orient: vertical;
-    -webkit-line-clamp: 2;
-    line-clamp: 2;
-    overflow: hidden;
-}
+//     display: none;
+//     -webkit-box-orient: vertical;
+//     -webkit-line-clamp: 2;
+//     line-clamp: 2;
+//     overflow: hidden;
+// }
 
 .price {
     margin: auto 0 16px;

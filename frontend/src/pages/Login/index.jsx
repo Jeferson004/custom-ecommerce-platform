@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { supabase } from '../../configs/supabase';
 import styles from './login.module.scss';
+import CustomerLoading from '../../components/Loadings/CustomerLoading';
 
 function Login() {
     const navigate = useNavigate();
@@ -51,6 +52,10 @@ function Login() {
         }
     };
 
+    if (loading) {
+        return <CustomerLoading />;
+    }
+
     return (
         <div className={styles.loginContainer}>
             <form onSubmit={handleSubmit}>
@@ -90,7 +95,8 @@ function Login() {
                 </div>
 
                 <button type="submit" disabled={loading}>
-                    {loading ? 'Logging in...' : 'Log in'}
+                    {/* {loading ? 'Logging in...' : 'Log in'} */}
+                    Log in
                 </button>
 
                 <p>

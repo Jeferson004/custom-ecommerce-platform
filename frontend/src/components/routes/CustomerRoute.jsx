@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Navigate, Outlet } from 'react-router-dom';
 import { supabase } from '../configs/supabase';
+import CustomerLoading from '../Loadings/CustomerLoading';
 
 function CustomerRoute() {
     const [status, setStatus] = useState('loading');
@@ -52,7 +53,7 @@ function CustomerRoute() {
     }, []);
 
     if (status === 'loading') {
-        return <p role="status">Checking permissions...</p>;
+        return <CustomerLoading />;
     }
 
     if (status === 'unauthenticated') {

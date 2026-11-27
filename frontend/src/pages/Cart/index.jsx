@@ -2,6 +2,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { getCart, updateCartItem, removeCartItem, clearCart } from '../../api/cart';
 import styles from './cart.module.scss';
+import CustomerLoading from '../../components/Loadings/CustomerLoading';
 
 function formatPrice(value) {
     const price = Number(value);
@@ -122,11 +123,13 @@ function Cart() {
 
     if (loading) {
         return (
-            <div className={styles.cartContainer}>
-                <p className={styles.message} role="status">
-                    Loading cart...
-                </p>
-            </div>
+            // <div className={styles.cartContainer}>
+            //     <p className={styles.message} role="status">
+            //         Loading cart...
+            //     </p>
+            // </div>
+
+            <CustomerLoading />
         );
     }
 

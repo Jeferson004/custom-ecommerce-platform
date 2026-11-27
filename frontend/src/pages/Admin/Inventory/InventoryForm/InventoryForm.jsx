@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useModalDialog } from '../../../../hooks/useModalDialog';
 import styles from './inventoryForm.module.scss';
 
 function InventoryForm({ products = [], inventory = [], onSubmit, onCancel }) {
@@ -9,6 +10,7 @@ function InventoryForm({ products = [], inventory = [], onSubmit, onCancel }) {
 
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
+    const { dialogRef, handleCancel } = useModalDialog({ onCancel, isBusy: loading });
 
     const handleChange = (event) => {
         const { name, value } = event.target;
@@ -47,11 +49,6 @@ function InventoryForm({ products = [], inventory = [], onSubmit, onCancel }) {
                 product_id: Number(formData.product_id),
                 quantity,
             });
-
-            setFormData({
-                product_id: '',
-                quantity: '',
-            });
         } catch (error) {
             setError(error.message || 'Unable to save inventory.');
         } finally {
@@ -60,9 +57,13 @@ function InventoryForm({ products = [], inventory = [], onSubmit, onCancel }) {
     };
 
     return (
-        <div className={styles.container}>
+        <dialog
+            ref={dialogRef}
+            className={styles.dialog}
+            aria-labelledby="inventory-form-title"
+            onCancel={handleCancel}>
             <form onSubmit={handleSubmit} className={styles.inventoryForm}>
-                <h2>Add Inventory</h2>
+                <h2 id="inventory-form-title">Add Inventory</h2>
 
                 {error && <p role="alert">{error}</p>}
 
@@ -114,7 +115,7 @@ function InventoryForm({ products = [], inventory = [], onSubmit, onCancel }) {
                     )}
                 </div>
             </form>
-        </div>
+        </dialog>
     );
 }
 

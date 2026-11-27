@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { getProducts } from '../../api/products';
 import ProductCard from '../../components/ProductCard';
 import styles from './product.module.scss';
+import CustomerLoading from '../../components/Loadings/CustomerLoading';
 
 function ProductPage() {
     const [products, setProducts] = useState([]);
@@ -41,13 +42,7 @@ function ProductPage() {
     }, []);
 
     if (loading) {
-        return (
-            <div className={styles.productContainer}>
-                <p role="status" className={styles.message}>
-                    Loading products...
-                </p>
-            </div>
-        );
+        return <CustomerLoading />;
     }
 
     if (error) {

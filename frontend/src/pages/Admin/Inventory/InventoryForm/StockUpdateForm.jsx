@@ -1,10 +1,12 @@
 import { useState } from 'react';
+import { useModalDialog } from '../../../../hooks/useModalDialog';
 import styles from './inventoryForm.module.scss';
 
 function StockUpdateForm({ item, onSubmit, onCancel }) {
     const [quantity, setQuantity] = useState(String(item.quantity));
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
+    const { dialogRef, handleCancel } = useModalDialog({ onCancel, isBusy: loading });
 
     const handleSubmit = async (event) => {
         event.preventDefault();
@@ -34,9 +36,13 @@ function StockUpdateForm({ item, onSubmit, onCancel }) {
     };
 
     return (
-        <div className={styles.container}>
+        <dialog
+            ref={dialogRef}
+            className={styles.dialog}
+            aria-labelledby="stock-update-form-title"
+            onCancel={handleCancel}>
             <form onSubmit={handleSubmit} className={styles.inventoryForm}>
-                <h2>Update Stock</h2>
+                <h2 id="stock-update-form-title">Update Stock</h2>
 
                 <p>
                     Product: <strong>{item.product_name}</strong>
@@ -72,7 +78,7 @@ function StockUpdateForm({ item, onSubmit, onCancel }) {
                     </button>
                 </div>
             </form>
-        </div>
+        </dialog>
     );
 }
 

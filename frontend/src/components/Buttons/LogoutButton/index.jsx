@@ -2,7 +2,7 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../../hooks/useAuth';
 
 function LogoutButton({ className }) {
-    const { profile, logout } = useAuth();
+    const { logout } = useAuth();
     const navigate = useNavigate();
 
     async function handleLogout() {
@@ -15,12 +15,9 @@ function LogoutButton({ className }) {
     }
 
     return (
-        <>
-            <span hidden>{profile?.name}</span>
-            <button className={className} onClick={handleLogout}>
-                Logout
-            </button>
-        </>
+        <button type="button" className={className} onClick={handleLogout}>
+            Logout
+        </button>
     );
 }
 

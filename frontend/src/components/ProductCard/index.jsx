@@ -22,9 +22,9 @@ function ProductCard({ product }) {
 
                 <h2 className={styles.name}>{product.name}</h2>
 
-                <p className={styles.description}>
+                {/* <p className={styles.description}>
                     {product.description || 'No description available.'}
-                </p>
+                </p> */}
 
                 <p className={styles.price}>
                     {formattedPrice === 'Price unavailable' ? formattedPrice : `₱${formattedPrice}`}

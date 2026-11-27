@@ -22,15 +22,62 @@
 
 .menuButton {
     display: none;
+    flex-direction: column;
+    justify-content: center;
+    gap: 5px;
+    width: 42px;
+    height: 42px;
+    padding: 8px;
     border: none;
-    background: none;
-    font-size: 24px;
+    border-radius: 6px;
+    background-color: transparent;
     cursor: pointer;
+
+    span {
+        display: block;
+        width: 24px;
+        height: 2px;
+        background-color: black;
+        border-radius: 2px;
+        transition:
+            transform 0.2s ease,
+            opacity 0.2s ease;
+    }
+
+    &:hover {
+        background-color: lightgray;
+    }
+
+    &.menuButtonOpen {
+        span:nth-child(1) {
+            transform: translateY(7px) rotate(45deg);
+        }
+
+        span:nth-child(2) {
+            opacity: 0;
+        }
+
+        span:nth-child(3) {
+            transform: translateY(-7px) rotate(-45deg);
+        }
+    }
+
+    &:focus-visible {
+        outline: 3px solid #2563eb;
+        outline-offset: 3px;
+    }
 }
 
 @media (max-width: 768px) {
+    .header {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+    }
+
     .menuButton {
-        display: block;
+        display: flex;
     }
 
     .header {

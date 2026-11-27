@@ -4,6 +4,7 @@ import { cancelOrder, getOrderById } from '../../../api/orders';
 import { formatPrice } from '../../../utils/formatPrice';
 import { formatDate } from '../../../utils/formatDate';
 import styles from './orderDetails.module.scss';
+import CustomerLoading from '../../../components/Loadings/CustomerLoading';
 
 function OrderDetails() {
     const { id } = useParams();
@@ -75,11 +76,7 @@ function OrderDetails() {
     };
 
     if (isLoading) {
-        return (
-            <div className={styles.ordersDetailsContainer}>
-                <p role="status">Loading order details...</p>
-            </div>
-        );
+        return <CustomerLoading />;
     }
 
     if (error && !orderData) {
@@ -89,7 +86,7 @@ function OrderDetails() {
                 <p className={styles.error} role="alert">
                     {error}
                 </p>
-                <Link to="/orders">Back to my orders</Link>
+                <Link to="/customer/orders">Back to my orders</Link>
             </div>
         );
     }
@@ -98,7 +95,7 @@ function OrderDetails() {
         return (
             <div className={styles.ordersDetailsContainer}>
                 <h1>Order not found</h1>
-                <Link to="/orders">Back to my orders</Link>
+                <Link to="/customer/orders">Back to my orders</Link>
             </div>
         );
     }
@@ -108,7 +105,7 @@ function OrderDetails() {
 
     return (
         <div className={styles.ordersDetailsContainer}>
-            <Link to="/orders" className={styles.backLink}>
+            <Link to="/customer/orders" className={styles.backLink}>
                 ← Back to my orders
             </Link>
 

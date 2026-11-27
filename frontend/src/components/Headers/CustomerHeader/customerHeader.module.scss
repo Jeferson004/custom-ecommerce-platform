@@ -5,12 +5,12 @@
     left: 0;
     z-index: 995;
     border-bottom: 1px solid lightgray;
+    background-color: white;
 
     .navbar {
         width: min(1200px, calc(100% - 32px));
         margin-inline: auto;
         padding: 16px;
-        background-color: white;
     }
 }
 
@@ -73,7 +73,7 @@
     display: none;
     flex-direction: column;
     justify-content: center;
-    gap: 5px;
+    gap: 2px;
     width: 42px;
     height: 42px;
     padding: 8px;
@@ -88,10 +88,28 @@
         height: 2px;
         background-color: black;
         border-radius: 2px;
+        transition:
+            transform 0.2s ease,
+            opacity 0.2s ease;
     }
 
     &:hover {
         background-color: lightgray;
+    }
+
+    // X state
+    &.menuToggleOpen {
+        span:nth-child(1) {
+            transform: translateY(7px) rotate(45deg);
+        }
+
+        span:nth-child(2) {
+            opacity: 0;
+        }
+
+        span:nth-child(3) {
+            transform: translateY(-7px) rotate(-45deg);
+        }
     }
 }
 

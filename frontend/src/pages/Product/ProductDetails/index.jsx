@@ -4,6 +4,7 @@ import { getProductById, getProducts } from '../../../api/products';
 import { addCartItem } from '../../../api/cart';
 import ProductCard from '../../../components/ProductCard';
 import styles from './productDetails.module.scss';
+import CustomerLoading from '../../../components/Loadings/CustomerLoading';
 
 function ProductDetails() {
     const { id } = useParams();
@@ -109,13 +110,7 @@ function ProductDetails() {
 
     // Product loading state
     if (loadingProduct) {
-        return (
-            <div className={styles.productsContainer}>
-                <p role="status" className={styles.message}>
-                    Loading product...
-                </p>
-            </div>
-        );
+        return <CustomerLoading />;
     }
 
     // Product error state
@@ -134,7 +129,7 @@ function ProductDetails() {
                         : productError}
                 </p>
 
-                <Link to="/">Back to products</Link>
+                <Link to="/customer/">Back to products</Link>
             </div>
         );
     }
@@ -145,7 +140,7 @@ function ProductDetails() {
             <div className={styles.productsContainer}>
                 <h1>Product unavailable</h1>
                 <p>This product is unavailable or does not exist.</p>
-                <Link to="/">Back to products</Link>
+                <Link to="/customer">Back to products</Link>
             </div>
         );
     }

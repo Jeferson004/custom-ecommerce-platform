@@ -1,14 +1,21 @@
 import styles from './adminHeader.module.scss';
 
-function AdminHeader({ onMenuClick }) {
+function AdminHeader({ isOpen, onMenuClick, menuButtonRef }) {
     return (
         <header className={styles.header}>
             <button
+                ref={menuButtonRef}
                 type="button"
-                className={styles.menuButton}
+                className={`${styles.menuButton} ${isOpen ? styles.menuButtonOpen : ''}`}
                 onClick={onMenuClick}
-                aria-label="Toggle navigation menu">
-                ☰
+                aria-label={isOpen ? 'Close navigation menu' : 'Open navigation menu'}
+                aria-expanded={isOpen}
+                aria-controls="admin-sidebar"
+                aria-haspopup="dialog"
+            >
+                <span></span>
+                <span></span>
+                <span></span>
             </button>
 
             <h1>Lorem</h1>
